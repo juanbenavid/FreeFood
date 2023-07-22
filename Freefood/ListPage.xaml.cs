@@ -1,5 +1,6 @@
 ﻿using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.UI;
+using System.Diagnostics;
 
 namespace Freefood;
 
@@ -9,8 +10,9 @@ public partial class ListPage : ContentPage
     public ListPage()
     {
         InitializeComponent();
-        this.BindingContext = new ListMapViewModel();
-        StartLocationServices();   
+        this.BindingContext = new ListMapViewModel(this);
+        StartLocationServices();
+        mapView.GeoViewTapped += OnMapViewTapped;
 
     }
 
@@ -37,6 +39,15 @@ public partial class ListPage : ContentPage
     private async void PinFoodButtonClicked(Object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("//FoodFormPage");
+    }
+    private async void OnMapViewTapped(object sender, GeoViewInputEventArgs e)
+    {
+        bool answer = await DisplayAlert("Pin point?", "Pin a point to this location:" + e.Location.ToString(), "Yes", "No");
+        Debug.WriteLine("Answer: " + answer);
+        if (answer)
+        {
+            PinFoodButtonClicked(sender, e);
+        }
     }
 }
 
