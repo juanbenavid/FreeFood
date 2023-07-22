@@ -9,9 +9,10 @@
             <Entry Placeholder ="Event Name" x:Name="EventName" />
             <Entry Placeholder ="Event Description" x:Name="EventDescription" />
             <Picker x:Name="CategoryPicker" Title="Select Category"/>
+            <Entry Placeholder="Directions" x:Name="EventDirections"/>
             <HorizontalStackLayout>
                 <Label Text="Are you donating this food?"/>
-                <CheckBox/>
+                <CheckBox x:Name="DonationCheck"/>
             </HorizontalStackLayout>
             <Button x:Name="SubmitFeatureButton" Text="Submit" Clicked = "SubmitFeatureClicked" IsEnabled="False"/>
         </VerticalStackLayout>

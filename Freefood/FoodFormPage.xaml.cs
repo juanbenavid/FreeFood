@@ -30,15 +30,17 @@ public partial class FoodFormPage : ContentPage
     public async void SubmitFeatureClicked (object sender, EventArgs e)
     {
         var dic = new Dictionary<string,string>();
-        dic["title"] = EventName.Text;
-        dic["category"] = CategoryPicker.SelectedItem.ToString();
-        dic["description"] = EventDescription.Text;
+        dic["Title"] = EventName.Text;
+        dic["Categories"] = CategoryPicker.SelectedItem.ToString();
+        dic["Description"] = EventDescription.Text;
+        //dic["Directions"] = EventDirections.Text;
+        dic["Donation"] = DonationCheck.IsChecked ? "Yes" : "No";
 
        
         AddFoodFeature(pinPoint, dic);
 
         await Navigation.PopAsync();
-        //BackHome(sender, e);
+       
     }
 
     public async void LoadFeatureTable()
@@ -46,7 +48,6 @@ public partial class FoodFormPage : ContentPage
         await serviceGeodatabase.LoadAsync();
         foodFeatureTable = serviceGeodatabase.GetTable(0);
         await foodFeatureTable.LoadAsync();
-        //foodFeatureTable.Loaded += FoodFeatureTable_Loaded;
         FoodFeatureTable_Loaded();
 
     }
@@ -62,9 +63,10 @@ public partial class FoodFormPage : ContentPage
         MapPoint tappedPoint = (MapPoint)location.NormalizeCentralMeridian();
 
         feature.Geometry = tappedPoint;
-        feature.SetAttributeValue("Title", args["title"]);
-        feature.SetAttributeValue("Categories", args["category"]);
-        feature.SetAttributeValue("Description", args["description"]);
+        foreach (var pair in args)
+        {
+            feature.SetAttributeValue(pair.Key, pair.Value);
+        }
 
         await foodFeatureTable.AddFeatureAsync(feature);
         await serviceGeodatabase.ApplyEditsAsync();

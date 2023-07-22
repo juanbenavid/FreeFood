@@ -99,8 +99,6 @@ public partial class ListPage : ContentPage
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-
-        // Unsubscribe from the event
         mapView.Map.Loaded -= Map_Loaded;
     }
 
