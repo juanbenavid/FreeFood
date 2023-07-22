@@ -9,12 +9,14 @@ public partial class FoodFormPage : ContentPage
     public List<string> FoodCategories = new List<string> { "Pizza", "Beverages", "Other" };
     private FeatureTable foodFeatureTable;
     ServiceGeodatabase serviceGeodatabase = new ServiceGeodatabase(ListMapViewModel.foodUri);
+    private MapPoint pinPoint;
 
-    public FoodFormPage()
+    public FoodFormPage(MapPoint pinPoint)
 	{
 		InitializeComponent();
         CategoryPicker.ItemsSource = FoodCategories;
         LoadFeatureTable();
+        this.pinPoint = pinPoint;
     }
 
     //public async void BackHome(object sender, EventArgs e)
@@ -29,8 +31,8 @@ public partial class FoodFormPage : ContentPage
         dic["category"] = CategoryPicker.SelectedItem.ToString();
         dic["description"] = EventDescription.Text;
 
-        var location = new MapPoint(0, 0, SpatialReference.Create(4326));
-        AddFoodFeature(location, dic);
+       
+        AddFoodFeature(pinPoint, dic);
 
         await Navigation.PopAsync();
         //BackHome(sender, e);

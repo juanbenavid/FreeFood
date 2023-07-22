@@ -73,11 +73,6 @@ public partial class ListPage : ContentPage
 
     }
 
-    private void PinFoodButtonClicked(Object sender, EventArgs e)
-    {
-        Navigation.PushAsync(new FoodFormPage());
-        //await Shell.Current.GoToAsync("//FoodFormPage");
-    }
 
     private void NavigationButton_Clicked(object sender, EventArgs e)
     {
@@ -89,7 +84,7 @@ public partial class ListPage : ContentPage
 
     private async void OnMapViewTapped(object sender, GeoViewInputEventArgs e)
     {
-        var pinPoint = new MapPoint(e.Location.X,e.Location.Y);
+        var pinPoint = new MapPoint(e.Location.X,e.Location.Y, e.Location.SpatialReference);
         var grapic = new Graphic(pinPoint, pinSymbol);
         pinOverlay.Graphics.Add(grapic);
 
@@ -97,7 +92,7 @@ public partial class ListPage : ContentPage
         Debug.WriteLine("Answer: " + answer);
         if (answer)
         {
-            PinFoodButtonClicked(sender, e);
+            Navigation.PushAsync(new FoodFormPage(pinPoint));
         }
         else
         {
