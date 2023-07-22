@@ -10,11 +10,11 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         this.BindingContext = new MapViewModel();
-        StartLocation();   
+        StartLocationServices();   
 
     }
 
-    private async Task StartLocation()
+    private async Task StartLocationServices()
     {
         var status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
 
