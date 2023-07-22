@@ -3,12 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Freefood.FoodFormPage"
              Title="Submit an event">
-    <StackLayout>
+    <StackLayout Margin="5">
         <Button Text="Cancel" HorizontalOptions="Start" Clicked="BackHome"/>
         <VerticalStackLayout Margin="20" Spacing="10">
-
             <Entry Placeholder ="Event Name" x:Name="EventName" />
             <Entry Placeholder ="Event Description" x:Name="EventDescription" />
+            <Picker x:Name="CategoryPicker" Title="Select Category"/>
+            <Button x:Name="SubmitFeatureButton" Text="Submit" Clicked = "SubmitFeatureClicked" IsEnabled="False"/>
         </VerticalStackLayout>
     </StackLayout>
 </ContentPage>
