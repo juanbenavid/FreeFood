@@ -14,6 +14,7 @@
                 <Label Text="Are you donating this food?"/>
                 <CheckBox x:Name="DonationCheck"/>
             </HorizontalStackLayout>
+            <Button x:Name="AttachPictureButton" Text="Attach Picture?" Clicked="AttachPictureClicked"/>
             <Button x:Name="SubmitFeatureButton" Text="Submit" Clicked = "SubmitFeatureClicked" IsEnabled="False"/>
         </VerticalStackLayout>
     </StackLayout>
