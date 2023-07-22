@@ -4,8 +4,30 @@
              xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
              x:Class="Freefood.FindFoodPage"
              Title="FindFoodPage">
-    <VerticalStackLayout>
-        <esri:MapView x:Name="FindFoodMapView" Map="{Binding FoodMap}" />
-        <!--<Button Text="Hello"/>-->
-    </VerticalStackLayout>
+    <Grid>
+        <esri:MapView x:Name="mapView" Map="{Binding FoodMap}" />
+
+        <Grid Padding="5"
+                  MaximumWidthRequest="200"
+                  RowDefinitions="*, *, *, *"
+                  ColumnDefinitions="*, *, *, *"
+                  RowSpacing="5">
+
+            <ImageButton Source="recenter.svg"
+                             x:Name="NavigationButton"
+                             Grid.Row="4"
+                             Grid.Column="4"
+                             VerticalOptions="End"
+                             Margin="10,32"
+                             HeightRequest="90"
+                             WidthRequest="90"
+                             Clicked="NavigationButton_Clicked"
+                             BackgroundColor="White"
+                             CornerRadius="40"
+                             Padding="8"
+                             />
+
+        </Grid>
+
+    </Grid>
 </ContentPage>
