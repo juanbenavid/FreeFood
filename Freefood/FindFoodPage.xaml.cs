@@ -13,10 +13,11 @@ public partial class FindFoodPage : ContentPage
     private SystemLocationDataSource locationSource = new SystemLocationDataSource();
 
     //Geotriggers
-    private LocationGeotriggerFeed _geotriggerFeed;
+    private LocationGeotriggerFeed _locationFeed;
     private ServiceFeatureTable foodPoints;
     private GeotriggerMonitor _foodMonitor;
     private List<GeotriggerFeature> _features = new List<GeotriggerFeature>();
+    private bool s = false;
 
     public FindFoodPage()
     {
@@ -31,9 +32,8 @@ public partial class FindFoodPage : ContentPage
         foodPoints = ((FeatureLayer)mapView.Map.OperationalLayers[0]).FeatureTable as ServiceFeatureTable;
         await locationSource?.StartAsync();
 
-        _geotriggerFeed = new LocationGeotriggerFeed(locationSource);
-
-        _foodMonitor = CreateGeotriggerMonitor(foodPoints, 3.0, "Food Geotrigger");
+        _locationFeed = new LocationGeotriggerFeed(locationSource);
+        _foodMonitor = CreateGeotriggerMonitor(foodPoints, 3000, "Food Geotrigger");
         await _foodMonitor?.StartAsync();
     }
 
@@ -43,7 +43,7 @@ public partial class FindFoodPage : ContentPage
         FeatureFenceParameters fenceParameters = new FeatureFenceParameters(table, bufferSize);
 
         // The ArcadeExpression defined in the following FenceGeotrigger returns the value for the "name" field of the feature that triggered the monitor.
-        FenceGeotrigger fenceTrigger = new FenceGeotrigger(_geotriggerFeed, FenceRuleType.EnterOrExit, fenceParameters, new ArcadeExpression("$fenceFeature.name"), triggerName);
+        FenceGeotrigger fenceTrigger = new FenceGeotrigger(_locationFeed, FenceRuleType.Enter, fenceParameters);
 
         // Create the monitor and set its event handler for notifications.
         GeotriggerMonitor geotriggerMonitor = new GeotriggerMonitor(fenceTrigger);
@@ -54,7 +54,7 @@ public partial class FindFoodPage : ContentPage
 
     private void HandleGeotriggerNotification(object sender, GeotriggerNotificationInfo info)
     {
-        Application.Current.MainPage.DisplayAlert("Entered Region", "Around some food.", "OK");
+        
     }
 
     private async Task StartLocationServices()
