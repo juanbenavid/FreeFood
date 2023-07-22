@@ -17,7 +17,7 @@ public class ListMapViewModel : INotifyPropertyChanged
 {
 
     public static Uri foodUri = new Uri("https://services8.arcgis.com/LLNIdHmmdjO2qQ5q/arcgis/rest/services/FreeFood/FeatureServer/0");
-    private FeatureLayer foodFeatureLayer;
+    public FeatureLayer foodFeatureLayer;
 
     public ListMapViewModel( )
     {   
@@ -28,7 +28,8 @@ public class ListMapViewModel : INotifyPropertyChanged
         };
 
         foodFeatureLayer = new FeatureLayer(foodUri);
-        _map.OperationalLayers.Add(foodFeatureLayer);   
+        _map.OperationalLayers.Add(foodFeatureLayer);
+
         
     }
 
@@ -51,6 +52,13 @@ public class ListMapViewModel : INotifyPropertyChanged
              PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public static async void Refresh(Map map)
+    {
+        map.OperationalLayers.Clear();
+        var featureLayer = new FeatureLayer(foodUri);
+        map.OperationalLayers.Add(featureLayer);
+    }
 
   
 }

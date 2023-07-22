@@ -6,7 +6,10 @@ namespace Freefood;
 
 public partial class FoodFormPage : ContentPage
 {
-    public List<string> FoodCategories = new List<string> { "Pizza", "Beverages", "Other" };
+    public List<string> FoodCategories = new List<string>
+    { "Pizza", "Beverages", "Candy", "Catered Food", "Chips", "Desserts", "Fruit", "Other", "Salad", "Sandwiches", "Snacks" };
+
+
     private FeatureTable foodFeatureTable;
     ServiceGeodatabase serviceGeodatabase = new ServiceGeodatabase(ListMapViewModel.foodUri);
     private MapPoint pinPoint;

@@ -1,4 +1,5 @@
-﻿using Esri.ArcGISRuntime.Geometry;
+﻿using Esri.ArcGISRuntime.Data;
+using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
@@ -11,6 +12,7 @@ public partial class ListPage : ContentPage
     private SystemLocationDataSource locationSource = new SystemLocationDataSource();
     private GraphicsOverlay pinOverlay = new GraphicsOverlay();
     private SimpleMarkerSymbol pinSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Cross, System.Drawing.Color.Red, 10);
+    
     public ListPage()
     {
         InitializeComponent();
@@ -107,5 +109,14 @@ public partial class ListPage : ContentPage
         // Unsubscribe from the event
         mapView.Map.Loaded -= Map_Loaded;
     }
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+
+        if (mapView.Map != null) { ListMapViewModel.Refresh(mapView.Map); }
+        
+    }
+
 
 }
