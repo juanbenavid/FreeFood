@@ -26,4 +26,9 @@
         ContentTemplate="{DataTemplate local:FoodFormPage}"
         Route="FoodFormPage" />
 
+    <ShellContent
+        Title="FeaturePage"
+        ContentTemplate="{DataTemplate local:FeaturePage}"
+        Route="FeaturePage" />
+
 </Shell>

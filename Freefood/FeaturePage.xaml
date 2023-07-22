@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Freefood.FeaturePage"
+             Title="FeaturePage">
+    <VerticalStackLayout Margin="20" Spacing="10">
+        <Frame  Padding="10">
+            <Label x:Name="FeatureTitle" Text="{Binding EventTitle}" TextColor="MediumPurple"
+                    FontAttributes="Bold" FontSize="Large" />
+        </Frame>
+        <Frame BorderColor="Black" Padding="10">
+            <Label x:Name="FeatureDescription" Text="{Binding EventDescription}" />
+        </Frame>
+        <Frame BorderColor="Black" Padding="10">
+            <Label x:Name="FeatureNavigationDetails" Text="{Binding EventNavigationDetails}" />
+        </Frame>
+        <Frame BorderColor="Black" Padding="10">
+            <Label x:Name="FeatureStartDate" Text="{Binding EventStartDate}" />
+        </Frame>
+        <Image Source="{Binding EventImage}"/>
+
+    </VerticalStackLayout>
+</ContentPage>

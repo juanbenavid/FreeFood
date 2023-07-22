@@ -80,6 +80,8 @@ public partial class ListPage : ContentPage
 
     private async void OnMapViewTapped(object sender, GeoViewInputEventArgs e)
     {
+        /// if feature tapped, give info. 
+        /// else ask to create a new feature.
         var layer = mapView.Map.OperationalLayers[0];
         IdentifyLayerResult identifyResult = await mapView.IdentifyLayerAsync(layer, e.Position, 2, false);
         if (identifyResult.GeoElements.Any())
@@ -89,6 +91,10 @@ public partial class ListPage : ContentPage
             await tappedFeature.LoadAsync();
 
             bool moreInfo = await DisplayAlert(tappedFeature.Attributes["Title"].ToString(), tappedFeature.Attributes["Description"].ToString(), "See full info", "back");
+            if (moreInfo)
+            {
+                Navigation.PushAsync(new FeaturePage(tappedFeature));
+            }
             return;
         }
 
