@@ -17,15 +17,18 @@ public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
     private LocationGeotriggerFeed _locationFeed;
     private ServiceFeatureTable foodPoints;
     private GeotriggerMonitor _foodMonitor;
-    private List<Feature> _visibleFeatures = new List<Feature>();
-    private List<Feature> _hiddenFeatures = new List<Feature>();
+    internal List<Feature> _visibleFeatures = new List<Feature>();
+    internal List<Feature> _hiddenFeatures = new List<Feature>();
     internal FindFoodViewModel vm;
+    internal FeatureTable featuresToDisplay;
+
 
     public FindFoodPage()
     {
         InitializeComponent();
         vm = new FindFoodViewModel(this);
         this.BindingContext = vm;
+        this.featuresToDisplay = vm.featuresToDisplay;
         _ = StartLocationServices();
         _ = Initialize();
         _ = vm.SetAllHidden();
@@ -39,6 +42,16 @@ public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
         _locationFeed = new LocationGeotriggerFeed(locationSource);
         _foodMonitor = CreateGeotriggerMonitor(foodPoints, 3000, "Food Geotrigger");
         await _foodMonitor?.StartAsync();
+
+        FeatureQueryResult allFeatures = await featuresToDisplay.QueryFeaturesAsync(null);
+        foreach (var feature in allFeatures)
+        {
+            for (int i = 0; i < allFeatures.Count<Feature>(); i++)
+            {
+                _hiddenFeatures.Add(allFeatures.ElementAt<Feature>(i));
+            }
+        }
+
     }
 
     private GeotriggerMonitor CreateGeotriggerMonitor(ServiceFeatureTable table, double bufferSize, string triggerName)

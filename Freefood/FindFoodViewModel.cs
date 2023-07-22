@@ -13,11 +13,11 @@ namespace Freefood
     internal class FindFoodViewModel : INotifyPropertyChanged
     {
         public static Uri foodUri = new Uri("https://services8.arcgis.com/LLNIdHmmdjO2qQ5q/arcgis/rest/services/FreeFood/FeatureServer/0");
-        private FeatureLayer foodFeatureLayer;
-        private FeatureLayer displayFeatureLayer;
+        internal FeatureLayer foodFeatureLayer;
+        internal FeatureLayer displayFeatureLayer;
         private ContentPage myPage;
         private MapView mapView;
-        FeatureTable featuresToDisplay;
+        internal FeatureTable featuresToDisplay;
 
         public FindFoodViewModel(ContentPage myPage)
         {
@@ -37,7 +37,9 @@ namespace Freefood
 
         public async Task SetAllHidden()
         {
+            //hopefully returns all features?
             FeatureQueryResult allFeatures = await featuresToDisplay.QueryFeaturesAsync(null);
+
             foreach (var feature in allFeatures)
             {
                 for (int i = 0; i < allFeatures.Count<Feature>(); i++)
