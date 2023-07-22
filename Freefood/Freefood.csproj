@@ -48,5 +48,17 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
+  
+	<ItemGroup>
+	  <Compile Update="FoodFormPage.xaml.cs">
+	    <DependentUpon>FoodFormPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+  
+	<ItemGroup>
+	  <MauiXaml Update="FoodFormPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
 
 </Project>

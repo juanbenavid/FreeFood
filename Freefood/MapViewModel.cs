@@ -13,6 +13,8 @@ namespace Freefood;
 public class MapViewModel : INotifyPropertyChanged
 {
 
+    private static Uri foodUri = new Uri("https://services8.arcgis.com/LLNIdHmmdjO2qQ5q/arcgis/rest/services/FreeFood/FeatureServer/0");
+    private FeatureLayer foodFeatureLayer;
 
     public MapViewModel()
     {   
@@ -21,7 +23,9 @@ public class MapViewModel : INotifyPropertyChanged
             InitialViewpoint = new Viewpoint(new Envelope(-180, -85, 180, 85, SpatialReferences.Wgs84)),
             Basemap = new Basemap(BasemapStyle.ArcGISStreets)
         };
-        
+
+        foodFeatureLayer = new FeatureLayer(foodUri);
+        _map.OperationalLayers.Add(foodFeatureLayer);
     }
 
     public void zoomToUser(MapPoint location)
