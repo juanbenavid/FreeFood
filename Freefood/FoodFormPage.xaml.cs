@@ -97,7 +97,11 @@ public partial class FoodFormPage : ContentPage
         {
             feature.SetAttributeValue(pair.Key, pair.Value);
         }
-        await feature.AddAttachmentAsync(filename, contentType, attachmentData);
+
+        if (filename != null)
+        {
+            await feature.AddAttachmentAsync(filename, contentType, attachmentData);
+        }
 
         await foodFeatureTable.AddFeatureAsync(feature);
         await serviceGeodatabase.ApplyEditsAsync();
