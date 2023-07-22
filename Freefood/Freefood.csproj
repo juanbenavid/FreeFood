@@ -53,6 +53,9 @@
 	  <Compile Update="FoodFormPage.xaml.cs">
 	    <DependentUpon>FoodFormPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="ListPage.xaml.cs">
+	    <DependentUpon>ListPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
   
 	<ItemGroup>

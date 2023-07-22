@@ -3,13 +3,13 @@ using Esri.ArcGISRuntime.UI;
 
 namespace Freefood;
 
-public partial class MainPage : ContentPage
+public partial class ListPage : ContentPage
 {
     private SystemLocationDataSource locationSource = new SystemLocationDataSource();
-    public MainPage()
+    public ListPage()
     {
         InitializeComponent();
-        this.BindingContext = new MapViewModel();
+        this.BindingContext = new ListMapViewModel();
         StartLocationServices();   
 
     }

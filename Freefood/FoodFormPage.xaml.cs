@@ -8,7 +8,7 @@ public partial class FoodFormPage : ContentPage
 {
     public List<string> FoodCategories = new List<string> { "Pizza", "Beverages", "Other" };
     private FeatureTable foodFeatureTable;
-    ServiceGeodatabase serviceGeodatabase = new ServiceGeodatabase(MapViewModel.foodUri);
+    ServiceGeodatabase serviceGeodatabase = new ServiceGeodatabase(ListMapViewModel.foodUri);
 
     public FoodFormPage()
 	{
@@ -19,7 +19,7 @@ public partial class FoodFormPage : ContentPage
 
     public async void BackHome(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("//MainPage");
+        await Shell.Current.GoToAsync("//ListPage");
     }
 
     public async void SubmitFeatureClicked (object sender, EventArgs e)
