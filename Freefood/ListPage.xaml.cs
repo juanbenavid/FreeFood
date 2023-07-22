@@ -80,6 +80,18 @@ public partial class ListPage : ContentPage
 
     private async void OnMapViewTapped(object sender, GeoViewInputEventArgs e)
     {
+        var layer = mapView.Map.OperationalLayers[0];
+        IdentifyLayerResult identifyResult = await mapView.IdentifyLayerAsync(layer, e.Position, 2, false);
+        if (identifyResult.GeoElements.Any())
+        {
+            GeoElement tappedElement = identifyResult.GeoElements.First();
+            ArcGISFeature tappedFeature = (ArcGISFeature)tappedElement;
+            await tappedFeature.LoadAsync();
+
+            bool moreInfo = await DisplayAlert(tappedFeature.Attributes["Title"].ToString(), tappedFeature.Attributes["Description"].ToString(), "See full info", "back");
+            return;
+        }
+
         var pinPoint = new MapPoint(e.Location.X,e.Location.Y, e.Location.SpatialReference);
         var grapic = new Graphic(pinPoint, pinSymbol);
         pinOverlay.Graphics.Add(grapic);
@@ -106,7 +118,7 @@ public partial class ListPage : ContentPage
     {
         base.OnNavigatedTo(args);
 
-        if (mapView.Map != null) { ListMapViewModel.Refresh(mapView.Map); mapView.GraphicsOverlays.Clear(); }
+        if (mapView.Map != null) { ListMapViewModel.Refresh(mapView.Map); mapView.GraphicsOverlays.First().Graphics.Clear(); }
         
     }
 

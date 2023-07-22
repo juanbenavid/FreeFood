@@ -33,7 +33,7 @@ public partial class FoodFormPage : ContentPage
 
     public async void SubmitFeatureClicked (object sender, EventArgs e)
     {
-        var dic = new Dictionary<string,dynamic>();
+        var dic = new Dictionary<string,string>();
         dic["Title"] = EventName.Text;
         dic["Categories"] = CategoryPicker.SelectedItem.ToString();
         dic["Description"] = EventDescription.Text;
@@ -87,7 +87,7 @@ public partial class FoodFormPage : ContentPage
         SubmitFeatureButton.IsEnabled = true;
     }
 
-    public async void AddFoodFeature(MapPoint location, Dictionary<string, dynamic> args)
+    public async void AddFoodFeature(MapPoint location, Dictionary<string, string> args)
     {
         ArcGISFeature feature = (ArcGISFeature)foodFeatureTable.CreateFeature();
         MapPoint tappedPoint = (MapPoint)location.NormalizeCentralMeridian();
