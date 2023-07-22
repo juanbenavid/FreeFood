@@ -5,10 +5,11 @@ using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.UI;
 using Esri.ArcGISRuntime;
+using System.ComponentModel;
 
 namespace Freefood;
 
-public partial class FindFoodPage : ContentPage
+public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
 {
     private SystemLocationDataSource locationSource = new SystemLocationDataSource();
 
@@ -16,15 +17,18 @@ public partial class FindFoodPage : ContentPage
     private LocationGeotriggerFeed _locationFeed;
     private ServiceFeatureTable foodPoints;
     private GeotriggerMonitor _foodMonitor;
-    private List<GeotriggerFeature> _features = new List<GeotriggerFeature>();
-    private bool s = false;
+    private List<Feature> _visibleFeatures = new List<Feature>();
+    private List<Feature> _hiddenFeatures = new List<Feature>();
+    internal FindFoodViewModel vm;
 
     public FindFoodPage()
     {
         InitializeComponent();
-        this.BindingContext = new FindFoodViewModel(this);
+        vm = new FindFoodViewModel(this);
+        this.BindingContext = vm;
         _ = StartLocationServices();
         _ = Initialize();
+        _ = vm.SetAllHidden();
     }
 
     private async Task Initialize()
@@ -43,7 +47,7 @@ public partial class FindFoodPage : ContentPage
         FeatureFenceParameters fenceParameters = new FeatureFenceParameters(table, bufferSize);
 
         // The ArcadeExpression defined in the following FenceGeotrigger returns the value for the "name" field of the feature that triggered the monitor.
-        FenceGeotrigger fenceTrigger = new FenceGeotrigger(_locationFeed, FenceRuleType.Enter, fenceParameters);
+        FenceGeotrigger fenceTrigger = new FenceGeotrigger(_locationFeed, FenceRuleType.EnterOrExit, fenceParameters);
 
         // Create the monitor and set its event handler for notifications.
         GeotriggerMonitor geotriggerMonitor = new GeotriggerMonitor(fenceTrigger);
@@ -52,9 +56,45 @@ public partial class FindFoodPage : ContentPage
         return geotriggerMonitor;
     }
 
-    private void HandleGeotriggerNotification(object sender, GeotriggerNotificationInfo info)
+    private void HandleGeotriggerNotification(object sender, GeotriggerNotificationInfo e)
     {
-        
+        GeoElement fence = (e as FenceGeotriggerNotificationInfo).FenceGeoElement;
+
+        string title = fence.Attributes["Title"]?.ToString();
+        //string startDate = fence.Attributes["StartDate"]?.ToString();
+        //string endDate = fence.Attributes["EndDate"]?.ToString();
+        //string description = fence.Attributes["Description"]?.ToString();
+        //string categories = fence.Attributes["Categories"]?.ToString();
+        //string navigationDetails = fence.Attributes["NavigationDetails"]?.ToString();
+        //string donation = fence.Attributes["Donation"]?.ToString();
+            //int there = int.Parse(fence.Attributes["There"]?.ToString());
+            //int gone = int.Parse(fence.Attributes["Gone"]?.ToString());
+
+            //if ((there + gone) > 25 && gone > there)
+            //    return;
+            if (e is FenceGeotriggerNotificationInfo fenceInfo)
+            {
+                if (fenceInfo.FenceNotificationType == FenceNotificationType.Entered)
+                {
+                    _visibleFeatures.Add((Feature)fence);
+                    if(_hiddenFeatures.Contains((Feature)fence))
+                    {
+                        _hiddenFeatures.Remove((Feature)fence);
+                    }
+                }
+                else if (fenceInfo.FenceNotificationType == FenceNotificationType.Exited)
+                {
+                    _hiddenFeatures.Add((Feature)fence);
+                    if(_visibleFeatures.Contains((Feature)fence))
+                    {
+                        _visibleFeatures.Remove((Feature)fence);
+                    }
+                }
+            }
+
+            _ = vm.UpdateFeaturesToBeDisplayed(_visibleFeatures, _hiddenFeatures);
+        //string dietaryInformation = fence.Attributes["DietaryInfo"]?.ToString();
+
     }
 
     private async Task StartLocationServices()

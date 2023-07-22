@@ -14,8 +14,10 @@ namespace Freefood
     {
         public static Uri foodUri = new Uri("https://services8.arcgis.com/LLNIdHmmdjO2qQ5q/arcgis/rest/services/FreeFood/FeatureServer/0");
         private FeatureLayer foodFeatureLayer;
+        private FeatureLayer displayFeatureLayer;
         private ContentPage myPage;
         private MapView mapView;
+        FeatureTable featuresToDisplay;
 
         public FindFoodViewModel(ContentPage myPage)
         {
@@ -26,38 +28,43 @@ namespace Freefood
             };
 
             foodFeatureLayer = new FeatureLayer(foodUri);
-            _map.OperationalLayers.Add(foodFeatureLayer);
+            displayFeatureLayer = foodFeatureLayer;
+            _map.OperationalLayers.Add(displayFeatureLayer);
             this.myPage = myPage;
             this.mapView = mapView;
         }
 
-        public async Task QueryFeatureLayer(string layerId, string whereExpression, Envelope queryExtent)
+
+        public async Task SetAllHidden()
         {
-            // Get the layer based on its Id.
-            var featureLayerToQuery = _map?.OperationalLayers[layerId] as FeatureLayer;
-
-            // Get the feature table from the feature layer.
-            var featureTableToQuery = featureLayerToQuery?.FeatureTable;
-            if (featureTableToQuery == null) { return; }
-            // Clear any existing selection.
-            featureLayerToQuery?.ClearSelection();
-
-            // Create the query parameters using the where expression and extent passed in.
-            QueryParameters queryParams = new QueryParameters
+            FeatureQueryResult allFeatures = await featuresToDisplay.QueryFeaturesAsync(null);
+            foreach (var feature in allFeatures)
             {
-                Geometry = queryExtent,
-                ReturnGeometry = true,
-                WhereClause = "Quantity >= 5",
-            };
+                for (int i = 0; i < allFeatures.Count<Feature>(); i++)
+                {
+                    displayFeatureLayer.SetFeatureVisible(allFeatures.ElementAt<Feature>(i), false);
+                }
+            }
+        }
 
-            // Query the table and get the list of features in the result.
-            var queryResult = await featureTableToQuery.QueryFeaturesAsync(queryParams);
-
-            // Loop over each feature from the query result.
-            foreach (Feature feature in queryResult)
+        public async Task UpdateFeaturesToBeDisplayed(List<Feature> visibleFeatures, List<Feature> hiddenFeatures)
+        {
+            //Set all the visible features
+            displayFeatureLayer.ClearSelection();
+            displayFeatureLayer.SelectFeatures(visibleFeatures);
+            FeatureQueryResult result = await displayFeatureLayer.GetSelectedFeaturesAsync();
+            for(int i = 0; i < result.Count<Feature>(); i++)
             {
-                // Select each feature.
-                featureLayerToQuery!.SelectFeature(feature);
+                displayFeatureLayer.SetFeatureVisible(result.ElementAt<Feature>(i), true);
+            }
+
+            //Set all the hidden features
+            displayFeatureLayer.ClearSelection();
+            displayFeatureLayer.SelectFeatures(hiddenFeatures);
+            result = await displayFeatureLayer.GetSelectedFeaturesAsync();
+            for(int i = 0; i < result.Count<Feature>(); i++)
+            {
+                displayFeatureLayer.SetFeatureVisible(result.ElementAt<Feature>(i), false);
             }
         }
 
@@ -73,7 +80,7 @@ namespace Freefood
         }
 
         /// <summary>
-        /// Raises the <see cref="MapViewModel.PropertyChanged" /> event
+        /// Raises the <see cref="FindFoodViewModel.PropertyChanged" /> event
         /// </summary>
         /// <param name="propertyName">The name of the property that has changed</param>
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
