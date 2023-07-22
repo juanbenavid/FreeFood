@@ -50,6 +50,10 @@
 	</ItemGroup>
   
 	<ItemGroup>
+	  <None Remove="Resources\Images\recenter.svg" />
+	</ItemGroup>
+  
+	<ItemGroup>
 	  <Compile Update="FoodFormPage.xaml.cs">
 	    <DependentUpon>FoodFormPage.xaml</DependentUpon>
 	  </Compile>

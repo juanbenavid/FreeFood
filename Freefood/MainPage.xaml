@@ -7,12 +7,27 @@
     <Grid>
         <esri:MapView x:Name="mapView" Map="{Binding Map}" />
 
-        <StackLayout Margin="20">
-            <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
-                <Button Text="Find free food" Clicked="FindFoodButtonClicked"/>
-                <Button Text="Pin free food"  Clicked="PinFoodButtonClicked"/>
-            </HorizontalStackLayout>
-        </StackLayout>
-    
+        <Grid Padding="5"
+                  MaximumWidthRequest="200"
+                  RowDefinitions="*, *, *, *"
+                  ColumnDefinitions="*, *, *, *"
+                  RowSpacing="5">
+                
+                <ImageButton Source="recenter.svg"
+                             x:Name="NavigationButton"
+                             Grid.Row="4"
+                             Grid.Column="4"
+                             VerticalOptions="End"
+                             Margin="10,32"
+                             HeightRequest="60"
+                             WidthRequest="60"
+                             Clicked="NavigationButton_Clicked"
+                             BackgroundColor="White"
+                             CornerRadius="30"
+                             Padding="8"
+                             />
+
+        </Grid>
+
     </Grid>
 </ContentPage>

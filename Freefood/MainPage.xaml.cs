@@ -10,7 +10,7 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         this.BindingContext = new MapViewModel();
-        StartLocation();   
+        _ = StartLocation();   
 
     }
 
@@ -38,5 +38,14 @@ public partial class MainPage : ContentPage
     {
         await Shell.Current.GoToAsync("//FoodFormPage");
     }
+
+    private void NavigationButton_Clicked(object sender, EventArgs e)
+    {
+        // Starts location display with auto pan mode set to Navigation.
+        mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
+
+        _ = StartLocation();
+    }
+
 }
 
