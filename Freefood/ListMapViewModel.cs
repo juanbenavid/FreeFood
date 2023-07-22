@@ -18,10 +18,8 @@ public class ListMapViewModel : INotifyPropertyChanged
 
     public static Uri foodUri = new Uri("https://services8.arcgis.com/LLNIdHmmdjO2qQ5q/arcgis/rest/services/FreeFood/FeatureServer/0");
     private FeatureLayer foodFeatureLayer;
-    private ContentPage myPage;
-    private MapView mapView;
 
-    public ListMapViewModel( ContentPage myPage)
+    public ListMapViewModel( )
     {   
         _map = new Map(SpatialReferences.WebMercator)
         {
@@ -31,8 +29,6 @@ public class ListMapViewModel : INotifyPropertyChanged
 
         foodFeatureLayer = new FeatureLayer(foodUri);
         _map.OperationalLayers.Add(foodFeatureLayer);   
-        this.myPage = myPage;
-        this.mapView = mapView;
         
     }
 

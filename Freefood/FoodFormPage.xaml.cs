@@ -9,18 +9,20 @@ public partial class FoodFormPage : ContentPage
     public List<string> FoodCategories = new List<string> { "Pizza", "Beverages", "Other" };
     private FeatureTable foodFeatureTable;
     ServiceGeodatabase serviceGeodatabase = new ServiceGeodatabase(ListMapViewModel.foodUri);
+    private MapPoint pinPoint;
 
-    public FoodFormPage()
+    public FoodFormPage(MapPoint pinPoint)
 	{
 		InitializeComponent();
         CategoryPicker.ItemsSource = FoodCategories;
         LoadFeatureTable();
+        this.pinPoint = pinPoint;
     }
 
-    public async void BackHome(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("//ListPage");
-    }
+    //public async void BackHome(object sender, EventArgs e)
+    //{
+    //    await Shell.Current.GoToAsync("//ListPage");
+    //}
 
     public async void SubmitFeatureClicked (object sender, EventArgs e)
     {
@@ -29,20 +31,24 @@ public partial class FoodFormPage : ContentPage
         dic["category"] = CategoryPicker.SelectedItem.ToString();
         dic["description"] = EventDescription.Text;
 
-        var location = new MapPoint(0, 0);
-        AddFoodFeature(location, dic);
+       
+        AddFoodFeature(pinPoint, dic);
 
-        BackHome(sender, e);
+        await Navigation.PopAsync();
+        //BackHome(sender, e);
     }
 
     public async void LoadFeatureTable()
     {
         await serviceGeodatabase.LoadAsync();
         foodFeatureTable = serviceGeodatabase.GetTable(0);
-        foodFeatureTable.Loaded += FoodFeatureTable_Loaded;
+        await foodFeatureTable.LoadAsync();
+        //foodFeatureTable.Loaded += FoodFeatureTable_Loaded;
+        FoodFeatureTable_Loaded();
+
     }
 
-    private void FoodFeatureTable_Loaded(object sender, EventArgs e)
+    private void FoodFeatureTable_Loaded()
     {
         SubmitFeatureButton.IsEnabled = true;
     }
@@ -54,8 +60,8 @@ public partial class FoodFormPage : ContentPage
 
         feature.Geometry = tappedPoint;
         feature.SetAttributeValue("Title", args["title"]);
-        feature.SetAttributeValue("Category", args["category"]);
-        //feature.SetAttributeValue("description", args["description"]);
+        feature.SetAttributeValue("Categories", args["category"]);
+        feature.SetAttributeValue("Description", args["description"]);
 
         await foodFeatureTable.AddFeatureAsync(feature);
         await serviceGeodatabase.ApplyEditsAsync();
