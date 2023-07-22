@@ -50,12 +50,18 @@
 	</ItemGroup>
   
 	<ItemGroup>
+	  <Compile Update="FindFoodView.xaml.cs">
+	    <DependentUpon>FindFoodView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="FoodFormPage.xaml.cs">
 	    <DependentUpon>FoodFormPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
   
 	<ItemGroup>
+	  <MauiXaml Update="FindFoodView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="FoodFormPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
