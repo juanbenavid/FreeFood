@@ -12,6 +12,11 @@
         Route="ListPage" />
 
     <ShellContent
+        Title="FindFood"
+        ContentTemplate="{DataTemplate local:FindFoodPage}"
+        Route="FindFoodPage"/>
+
+    <ShellContent
         Title="FoodFormPage"
         ContentTemplate="{DataTemplate local:FoodFormPage}"
         Route="FoodFormPage" />
