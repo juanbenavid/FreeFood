@@ -6,5 +6,13 @@
 
     <Grid>
         <esri:MapView x:Name="mapView" Map="{Binding Map}" />
+
+        <StackLayout Margin="20">
+            <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
+                <Button Text="Find free food" Clicked="FindFoodButtonClicked"/>
+                <Button Text="Pin free food"  Clicked="PinFoodButtonClicked"/>
+            </HorizontalStackLayout>
+        </StackLayout>
+    
     </Grid>
 </ContentPage>

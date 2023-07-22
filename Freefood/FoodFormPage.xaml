@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Freefood.FoodFormPage"
+             Title="Submit an event">
+    <StackLayout>
+        <Button Text="Cancel" HorizontalOptions="Start" Clicked="BackHome"/>
+        <VerticalStackLayout Margin="20" Spacing="10">
+
+            <Entry Placeholder ="Event Name" x:Name="EventName" />
+            <Entry Placeholder ="Event Description" x:Name="EventDescription" />
+        </VerticalStackLayout>
+    </StackLayout>
+</ContentPage>

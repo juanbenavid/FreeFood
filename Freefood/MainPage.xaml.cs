@@ -28,5 +28,15 @@ public partial class MainPage : ContentPage
         mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
 
     }
+
+    private void FindFoodButtonClicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private async void PinFoodButtonClicked(Object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//FoodFormPage");
+    }
 }
 

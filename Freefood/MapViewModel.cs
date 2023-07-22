@@ -26,7 +26,6 @@ public class MapViewModel : INotifyPropertyChanged
 
         foodFeatureLayer = new FeatureLayer(foodUri);
         _map.OperationalLayers.Add(foodFeatureLayer);
-        var x = 0;
     }
 
     public void zoomToUser(MapPoint location)
