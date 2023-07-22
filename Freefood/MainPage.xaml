@@ -5,6 +5,6 @@
              x:Class="Freefood.MainPage">
 
     <Grid>
-         <esri:MapView x:Name="mapView" Map="{Binding Map}" />
+        <esri:MapView x:Name="mapView" Map="{Binding Map}" />
     </Grid>
 </ContentPage>

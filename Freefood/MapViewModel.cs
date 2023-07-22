@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Esri.ArcGISRuntime.Geometry;
+using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Mapping;
 using Map = Esri.ArcGISRuntime.Mapping.Map;
 
@@ -11,14 +12,19 @@ namespace Freefood;
 /// </summary>
 public class MapViewModel : INotifyPropertyChanged
 {
+
+    
+
     public MapViewModel()
-    {
+    {   
         _map = new Map(SpatialReferences.WebMercator)
         {
             InitialViewpoint = new Viewpoint(new Envelope(-180, -85, 180, 85, SpatialReferences.Wgs84)),
             Basemap = new Basemap(BasemapStyle.ArcGISStreets)
         };
+        
     }
+
 
     private Esri.ArcGISRuntime.Mapping.Map _map;
 
