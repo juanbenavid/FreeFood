@@ -31,9 +31,9 @@ public partial class ListPage : ContentPage
 
     }
 
-    private void FindFoodButtonClicked(object sender, EventArgs e)
+    private async void FindFoodButtonClicked(object sender, EventArgs e)
     {
-
+        await Shell.Current.GoToAsync("//FindFoodPage");
     }
 
     private async void PinFoodButtonClicked(Object sender, EventArgs e)
