@@ -1,4 +1,6 @@
-﻿using Esri.ArcGISRuntime.Location;
+﻿using Esri.ArcGISRuntime.Geometry;
+using Esri.ArcGISRuntime.Location;
+using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
 using System.Diagnostics;
 
@@ -7,12 +9,16 @@ namespace Freefood;
 public partial class ListPage : ContentPage
 {
     private SystemLocationDataSource locationSource = new SystemLocationDataSource();
+    private GraphicsOverlay pinOverlay = new GraphicsOverlay();
+    private SimpleMarkerSymbol pinSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Cross, System.Drawing.Color.Red, 10);
     public ListPage()
     {
         InitializeComponent();
-        this.BindingContext = new ListMapViewModel(this);
+        this.BindingContext = new ListMapViewModel();
         mapView.Map.Loaded += Map_Loaded;
         mapView.GeoViewTapped += OnMapViewTapped;
+        mapView.GraphicsOverlays.Add(pinOverlay);
+
     }
 
     private async Task StartLocationServices()
@@ -83,11 +89,19 @@ public partial class ListPage : ContentPage
 
     private async void OnMapViewTapped(object sender, GeoViewInputEventArgs e)
     {
-        bool answer = await DisplayAlert("Pin point?", "Pin a point to this location:" + e.Location.ToString(), "Yes", "No");
+        var pinPoint = new MapPoint(e.Location.X,e.Location.Y);
+        var grapic = new Graphic(pinPoint, pinSymbol);
+        pinOverlay.Graphics.Add(grapic);
+
+        bool answer = await DisplayAlert("Pin point?", "Pin a point to this location?", "Yes", "No");
         Debug.WriteLine("Answer: " + answer);
         if (answer)
         {
             PinFoodButtonClicked(sender, e);
+        }
+        else
+        {
+            pinOverlay.Graphics.Clear();
         }
     }
 
