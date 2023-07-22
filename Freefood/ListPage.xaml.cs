@@ -70,12 +70,6 @@ public partial class ListPage : ContentPage
         _ = StartLocationServices();
     }
 
-    private void FindFoodButtonClicked(object sender, EventArgs e)
-    {
-
-    }
-
-
     private void NavigationButton_Clicked(object sender, EventArgs e)
     {
         // Starts location display with auto pan mode set to Navigation.
@@ -114,7 +108,7 @@ public partial class ListPage : ContentPage
     {
         base.OnNavigatedTo(args);
 
-        if (mapView.Map != null) { ListMapViewModel.Refresh(mapView.Map); }
+        if (mapView.Map != null) { ListMapViewModel.Refresh(mapView.Map); mapView.GraphicsOverlays.Clear(); }
         
     }
 
