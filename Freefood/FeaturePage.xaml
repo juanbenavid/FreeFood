@@ -17,7 +17,7 @@
         <Frame BorderColor="Black" Padding="10">
             <Label x:Name="FeatureStartDate" Text="{Binding EventStartDate}" />
         </Frame>
-        <Image Source="{Binding EventImage}"/>
+        <Image x:Name="EventImage"/>
 
     </VerticalStackLayout>
 </ContentPage>

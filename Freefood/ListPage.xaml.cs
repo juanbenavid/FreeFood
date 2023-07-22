@@ -90,7 +90,10 @@ public partial class ListPage : ContentPage
             ArcGISFeature tappedFeature = (ArcGISFeature)tappedElement;
             await tappedFeature.LoadAsync();
 
-            bool moreInfo = await DisplayAlert(tappedFeature.Attributes["Title"].ToString(), tappedFeature.Attributes["Description"].ToString(), "See full info", "back");
+            bool moreInfo = await DisplayAlert(
+                tappedFeature.Attributes["Title"]?.ToString() ?? "No Title", 
+                tappedFeature.Attributes["Description"]?.ToString() ?? "No Description",
+                "See full info", "back");
             if (moreInfo)
             {
                 Navigation.PushAsync(new FeaturePage(tappedFeature));

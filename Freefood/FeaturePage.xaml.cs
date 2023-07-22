@@ -9,34 +9,38 @@ public partial class FeaturePage : ContentPage
     
 	public FeaturePage(ArcGISFeature feature)
 	{
-		InitializeComponent();
-		this.feature = feature;
-		this.BindingContext = this;
+        InitializeComponent();
+        this.feature = feature;
+        this.BindingContext = this;
+        SetImageSource();
 
-        attachments = feature.GetAttachmentsAsync().Result;
-	}
+    }
 
     public string EventTitle
     {
-        get => feature.Attributes["Title"].ToString();
+        get => feature.Attributes["Title"]?.ToString() ?? " ";
     }
     public string EventDescription
     {
-        get => "Description: "+ feature.Attributes["Description"].ToString();
+        get => "Description: "+ feature.Attributes["Description"]?.ToString() ?? " ";
     }
     public string EventStartDate
     {
-        get => "Posted: " + feature.Attributes["StartDate"].ToString();
+        get => "Posted: " + feature.Attributes["StartDate"]?.ToString() ?? " ";
     }
 
     public string EventNavigationDetails
     {
-        get => "Directions: " + feature.Attributes["NavigationDetails"].ToString();
+        get => "Directions: " + feature.Attributes["NavigationDetails"]?.ToString() ?? " ";
     }
 
-    public ImageSource EventImage
+    public async Task SetImageSource()
     {
-        get => ImageSource.FromStream(() => attachments.First().GetDataAsync().Result);
+        attachments = feature.GetAttachmentsAsync().Result;
+        if (attachments.Any())
+        {
+            EventImage.Source = ImageSource.FromStream(() => attachments.First().GetDataAsync().Result);
+        }
     }
 
 }
