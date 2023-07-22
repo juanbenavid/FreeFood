@@ -4,7 +4,7 @@
              x:Class="Freefood.FoodFormPage"
              Title="Submit an event">
     <StackLayout Margin="5">
-        <Button Text="Cancel" HorizontalOptions="Start" Clicked="BackHome"/>
+        <!--<Button Text="Cancel" HorizontalOptions="Start" Clicked="BackHome"/>-->
         <VerticalStackLayout Margin="20" Spacing="10">
             <Entry Placeholder ="Event Name" x:Name="EventName" />
             <Entry Placeholder ="Event Description" x:Name="EventDescription" />

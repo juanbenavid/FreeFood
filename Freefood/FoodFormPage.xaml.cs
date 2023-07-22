@@ -17,10 +17,10 @@ public partial class FoodFormPage : ContentPage
         LoadFeatureTable();
     }
 
-    public async void BackHome(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("//ListPage");
-    }
+    //public async void BackHome(object sender, EventArgs e)
+    //{
+    //    await Shell.Current.GoToAsync("//ListPage");
+    //}
 
     public async void SubmitFeatureClicked (object sender, EventArgs e)
     {
@@ -32,7 +32,8 @@ public partial class FoodFormPage : ContentPage
         var location = new MapPoint(0, 0);
         AddFoodFeature(location, dic);
 
-        BackHome(sender, e);
+        await Navigation.PopAsync();
+        //BackHome(sender, e);
     }
 
     public async void LoadFeatureTable()

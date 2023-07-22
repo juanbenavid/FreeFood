@@ -7,14 +7,19 @@
     Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:ListPage}"
-        Route="ListPage" />
+        Title="Main Menu"
+        ContentTemplate="{DataTemplate local:MainMenuPage}"
+        Route="MainMenuPage"/>
 
     <ShellContent
-        Title="FindFood"
+        Title="Find Food"
         ContentTemplate="{DataTemplate local:FindFoodPage}"
         Route="FindFoodPage"/>
+    
+    <ShellContent
+        Title="List Food"
+        ContentTemplate="{DataTemplate local:ListPage}"
+        Route="ListPage" />
 
     <ShellContent
         Title="FoodFormPage"

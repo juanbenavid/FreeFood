@@ -36,9 +36,10 @@ public partial class ListPage : ContentPage
 
     }
 
-    private async void PinFoodButtonClicked(Object sender, EventArgs e)
+    private void PinFoodButtonClicked(Object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("//FoodFormPage");
+        Navigation.PushAsync(new FoodFormPage());
+        //await Shell.Current.GoToAsync("//FoodFormPage");
     }
 
     private void NavigationButton_Clicked(object sender, EventArgs e)
