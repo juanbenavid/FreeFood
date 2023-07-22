@@ -43,7 +43,7 @@ public partial class FoodFormPage : ContentPage
         dic["EndDate"] = DateTime.Now.AddDays(1).ToString("yyyy-mm-dd hh:mm:ss tt");
 
        
-        AddFoodFeature(pinPoint, dic);
+        await AddFoodFeature(pinPoint, dic);
 
         await Navigation.PopAsync();
        
@@ -87,7 +87,7 @@ public partial class FoodFormPage : ContentPage
         SubmitFeatureButton.IsEnabled = true;
     }
 
-    public async void AddFoodFeature(MapPoint location, Dictionary<string, string> args)
+    public async Task AddFoodFeature(MapPoint location, Dictionary<string, string> args)
     {
         ArcGISFeature feature = (ArcGISFeature)foodFeatureTable.CreateFeature();
         MapPoint tappedPoint = (MapPoint)location.NormalizeCentralMeridian();
