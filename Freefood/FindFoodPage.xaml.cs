@@ -34,7 +34,6 @@ public partial class FindFoodPage : ContentPage
         _geotriggerFeed = new LocationGeotriggerFeed(locationSource);
 
         _foodMonitor = CreateGeotriggerMonitor(foodPoints, 3.0, "Food Geotrigger");
-
         await _foodMonitor?.StartAsync();
     }
 
