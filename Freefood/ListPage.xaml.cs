@@ -1,4 +1,7 @@
-﻿using Esri.ArcGISRuntime.Location;
+﻿using Esri.ArcGISRuntime.Data;
+using Esri.ArcGISRuntime.Geometry;
+using Esri.ArcGISRuntime.Location;
+using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
 using System.Diagnostics;
 
@@ -7,12 +10,17 @@ namespace Freefood;
 public partial class ListPage : ContentPage
 {
     private SystemLocationDataSource locationSource = new SystemLocationDataSource();
+    private GraphicsOverlay pinOverlay = new GraphicsOverlay();
+    private SimpleMarkerSymbol pinSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Cross, System.Drawing.Color.Red, 10);
+    
     public ListPage()
     {
         InitializeComponent();
-        this.BindingContext = new ListMapViewModel(this);
+        this.BindingContext = new ListMapViewModel();
         mapView.Map.Loaded += Map_Loaded;
         mapView.GeoViewTapped += OnMapViewTapped;
+        mapView.GraphicsOverlays.Add(pinOverlay);
+
     }
 
     private async Task StartLocationServices()
@@ -62,17 +70,6 @@ public partial class ListPage : ContentPage
         _ = StartLocationServices();
     }
 
-    private void FindFoodButtonClicked(object sender, EventArgs e)
-    {
-
-    }
-
-    private void PinFoodButtonClicked(Object sender, EventArgs e)
-    {
-        Navigation.PushAsync(new FoodFormPage());
-        //await Shell.Current.GoToAsync("//FoodFormPage");
-    }
-
     private void NavigationButton_Clicked(object sender, EventArgs e)
     {
         // Starts location display with auto pan mode set to Navigation.
@@ -83,20 +80,47 @@ public partial class ListPage : ContentPage
 
     private async void OnMapViewTapped(object sender, GeoViewInputEventArgs e)
     {
-        bool answer = await DisplayAlert("Pin point?", "Pin a point to this location:" + e.Location.ToString(), "Yes", "No");
+        var layer = mapView.Map.OperationalLayers[0];
+        IdentifyLayerResult identifyResult = await mapView.IdentifyLayerAsync(layer, e.Position, 2, false);
+        if (identifyResult.GeoElements.Any())
+        {
+            GeoElement tappedElement = identifyResult.GeoElements.First();
+            ArcGISFeature tappedFeature = (ArcGISFeature)tappedElement;
+            await tappedFeature.LoadAsync();
+
+            bool moreInfo = await DisplayAlert(tappedFeature.Attributes["Title"].ToString(), tappedFeature.Attributes["Description"].ToString(), "See full info", "back");
+            return;
+        }
+
+        var pinPoint = new MapPoint(e.Location.X,e.Location.Y, e.Location.SpatialReference);
+        var grapic = new Graphic(pinPoint, pinSymbol);
+        pinOverlay.Graphics.Add(grapic);
+
+        bool answer = await DisplayAlert("Pin point?", "Pin a point to this location?", "Yes", "No");
         Debug.WriteLine("Answer: " + answer);
         if (answer)
         {
-            PinFoodButtonClicked(sender, e);
+            Navigation.PushAsync(new FoodFormPage(pinPoint));
+        }
+        else
+        {
+            pinOverlay.Graphics.Clear();
         }
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-
-        // Unsubscribe from the event
         mapView.Map.Loaded -= Map_Loaded;
     }
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+
+        if (mapView.Map != null) { ListMapViewModel.Refresh(mapView.Map); mapView.GraphicsOverlays.First().Graphics.Clear(); }
+        
+    }
+
 
 }
