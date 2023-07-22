@@ -11,24 +11,55 @@ public partial class ListPage : ContentPage
     {
         InitializeComponent();
         this.BindingContext = new ListMapViewModel(this);
-        _ = StartLocationServices();   
+        mapView.Map.Loaded += Map_Loaded;
         mapView.GeoViewTapped += OnMapViewTapped;
-
     }
 
     private async Task StartLocationServices()
     {
-        var status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
-
-        mapView.LocationDisplay.DataSource = locationSource;
-        if (status == Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
+        try
         {
-            await mapView.LocationDisplay.DataSource.StartAsync();
-            mapView.LocationDisplay.IsEnabled = true;
+            // Check if location permission granted.
+            var status = Microsoft.Maui.ApplicationModel.PermissionStatus.Unknown;
+            status = await Microsoft.Maui.ApplicationModel.Permissions.CheckStatusAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
+
+            // Request location permission if not granted.
+            if (status != Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
+            {
+                status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
+            }
+
+            // Start the location display once permission is granted.
+            if (status == Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
+            {
+                await mapView.LocationDisplay.DataSource.StartAsync();
+                mapView.LocationDisplay.IsEnabled = true;
+            }
+            mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            await Application.Current.MainPage.DisplayAlert("Couldn't start location", ex.Message, "OK");
         }
 
-        mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
+        //var status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
+ 
+        //mapView.LocationDisplay.DataSource = locationSource;
+        //if (status == Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
+        //{
+        //    await mapView.LocationDisplay.DataSource.StartAsync();
+        //    mapView.LocationDisplay.IsEnabled = true;
+        //}
 
+        //mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
+    }
+
+    private void Map_Loaded(object sender, EventArgs e)
+    {
+        // Perform actions or set up the map here
+        // For example, add layers, set initial viewpoint, etc.
+        _ = StartLocationServices();
     }
 
     private void FindFoodButtonClicked(object sender, EventArgs e)
@@ -36,9 +67,10 @@ public partial class ListPage : ContentPage
 
     }
 
-    private async void PinFoodButtonClicked(Object sender, EventArgs e)
+    private void PinFoodButtonClicked(Object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("//FoodFormPage");
+        Navigation.PushAsync(new FoodFormPage());
+        //await Shell.Current.GoToAsync("//FoodFormPage");
     }
 
     private void NavigationButton_Clicked(object sender, EventArgs e)
@@ -58,4 +90,13 @@ public partial class ListPage : ContentPage
             PinFoodButtonClicked(sender, e);
         }
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        // Unsubscribe from the event
+        mapView.Map.Loaded -= Map_Loaded;
+    }
+
 }
