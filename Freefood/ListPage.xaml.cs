@@ -11,7 +11,7 @@ public partial class ListPage : ContentPage
     {
         InitializeComponent();
         this.BindingContext = new ListMapViewModel(this);
-        StartLocationServices();
+        _ = StartLocationServices();   
         mapView.GeoViewTapped += OnMapViewTapped;
 
     }
@@ -40,6 +40,15 @@ public partial class ListPage : ContentPage
     {
         await Shell.Current.GoToAsync("//FoodFormPage");
     }
+
+    private void NavigationButton_Clicked(object sender, EventArgs e)
+    {
+        // Starts location display with auto pan mode set to Navigation.
+        mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
+
+        _ = StartLocationServices();
+    }
+
     private async void OnMapViewTapped(object sender, GeoViewInputEventArgs e)
     {
         bool answer = await DisplayAlert("Pin point?", "Pin a point to this location:" + e.Location.ToString(), "Yes", "No");
@@ -50,4 +59,3 @@ public partial class ListPage : ContentPage
         }
     }
 }
-
