@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Mapping;
@@ -10,13 +11,13 @@ namespace Freefood;
 /// <summary>
 /// Provides map data to an application
 /// </summary>
-public class MapViewModel : INotifyPropertyChanged
+public class ListMapViewModel : INotifyPropertyChanged
 {
 
-    private static Uri foodUri = new Uri("https://services8.arcgis.com/LLNIdHmmdjO2qQ5q/arcgis/rest/services/FreeFood/FeatureServer/0");
+    public static Uri foodUri = new Uri("https://services8.arcgis.com/LLNIdHmmdjO2qQ5q/arcgis/rest/services/FreeFood/FeatureServer/0");
     private FeatureLayer foodFeatureLayer;
 
-    public MapViewModel()
+    public ListMapViewModel()
     {   
         _map = new Map(SpatialReferences.WebMercator)
         {
@@ -25,14 +26,8 @@ public class MapViewModel : INotifyPropertyChanged
         };
 
         foodFeatureLayer = new FeatureLayer(foodUri);
-        _map.OperationalLayers.Add(foodFeatureLayer);
+        _map.OperationalLayers.Add(foodFeatureLayer);   
     }
-
-    public void zoomToUser(MapPoint location)
-    {
-        return;
-    }
-
 
     private Esri.ArcGISRuntime.Mapping.Map _map;
 

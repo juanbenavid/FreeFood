@@ -3,18 +3,18 @@ using Esri.ArcGISRuntime.UI;
 
 namespace Freefood;
 
-public partial class MainPage : ContentPage
+public partial class ListPage : ContentPage
 {
     private SystemLocationDataSource locationSource = new SystemLocationDataSource();
-    public MainPage()
+    public ListPage()
     {
         InitializeComponent();
-        this.BindingContext = new MapViewModel();
-        _ = StartLocation();   
+        this.BindingContext = new ListMapViewModel();
+        StartLocationServices();   
 
     }
 
-    private async Task StartLocation()
+    private async Task StartLocationServices()
     {
         var status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
 
