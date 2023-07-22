@@ -39,10 +39,6 @@ public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
         foodPoints = ((FeatureLayer)mapView.Map.OperationalLayers[0]).FeatureTable as ServiceFeatureTable;
         await locationSource?.StartAsync();
 
-        _locationFeed = new LocationGeotriggerFeed(locationSource);
-        _foodMonitor = CreateGeotriggerMonitor(foodPoints, 3000, "Food Geotrigger");
-        await _foodMonitor?.StartAsync();
-
         FeatureQueryResult allFeatures = await featuresToDisplay.QueryFeaturesAsync(null);
         foreach (var feature in allFeatures)
         {
@@ -51,6 +47,11 @@ public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
                 _hiddenFeatures.Add(allFeatures.ElementAt<Feature>(i));
             }
         }
+
+        _locationFeed = new LocationGeotriggerFeed(locationSource);
+        _foodMonitor = CreateGeotriggerMonitor(foodPoints, 3000, "Food Geotrigger");
+        await _foodMonitor?.StartAsync();
+
 
     }
 
