@@ -6,11 +6,11 @@ namespace Freefood;
 public partial class MainPage : ContentPage
 {
     private SystemLocationDataSource locationSource = new SystemLocationDataSource();
-    public MainPage()
+    public async MainPage()
     {
         InitializeComponent();
         this.BindingContext = new MapViewModel();
-        StartLocation();   
+        await StartLocation();   
 
     }
 
