@@ -10,7 +10,7 @@ public partial class ListPage : ContentPage
     {
         InitializeComponent();
         this.BindingContext = new ListMapViewModel();
-        StartLocationServices();   
+        _ = StartLocationServices();   
 
     }
 
@@ -44,7 +44,7 @@ public partial class ListPage : ContentPage
         // Starts location display with auto pan mode set to Navigation.
         mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
 
-        _ = StartLocation();
+        _ = StartLocationServices();
     }
 
 }

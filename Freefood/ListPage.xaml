@@ -19,11 +19,11 @@
                              Grid.Column="4"
                              VerticalOptions="End"
                              Margin="10,32"
-                             HeightRequest="60"
-                             WidthRequest="60"
+                             HeightRequest="90"
+                             WidthRequest="90"
                              Clicked="NavigationButton_Clicked"
                              BackgroundColor="White"
-                             CornerRadius="30"
+                             CornerRadius="40"
                              Padding="8"
                              />
 
