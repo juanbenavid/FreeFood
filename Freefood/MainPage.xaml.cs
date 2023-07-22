@@ -1,4 +1,5 @@
 ﻿using Esri.ArcGISRuntime.Location;
+using Esri.ArcGISRuntime.UI;
 
 namespace Freefood;
 
@@ -23,6 +24,8 @@ public partial class MainPage : ContentPage
             await mapView.LocationDisplay.DataSource.StartAsync();
             mapView.LocationDisplay.IsEnabled = true;
         }
+
+        mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
 
     }
 }

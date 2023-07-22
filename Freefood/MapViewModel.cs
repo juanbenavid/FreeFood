@@ -13,7 +13,6 @@ namespace Freefood;
 public class MapViewModel : INotifyPropertyChanged
 {
 
-    
 
     public MapViewModel()
     {   
@@ -23,6 +22,11 @@ public class MapViewModel : INotifyPropertyChanged
             Basemap = new Basemap(BasemapStyle.ArcGISStreets)
         };
         
+    }
+
+    public void zoomToUser(MapPoint location)
+    {
+        return;
     }
 
 
