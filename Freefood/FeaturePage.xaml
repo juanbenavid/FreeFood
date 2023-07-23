@@ -3,21 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Freefood.FeaturePage"
              Title="FeaturePage">
-    <VerticalStackLayout Margin="20" Spacing="10">
-        <Frame  Padding="10">
-            <Label x:Name="FeatureTitle" Text="{Binding EventTitle}" TextColor="MediumPurple"
+    <ScrollView Margin="20">
+        <StackLayout Spacing="16">
+            <Frame  Padding="10">
+                <Label x:Name="FeatureTitle" Text="{Binding EventTitle}" TextColor="MediumPurple"
                     FontAttributes="Bold" FontSize="Large" />
-        </Frame>
-        <Frame BorderColor="Black" Padding="10">
-            <Label x:Name="FeatureDescription" Text="{Binding EventDescription}" />
-        </Frame>
-        <Frame BorderColor="Black" Padding="10">
-            <Label x:Name="FeatureNavigationDetails" Text="{Binding EventNavigationDetails}" />
-        </Frame>
-        <Frame BorderColor="Black" Padding="10">
-            <Label x:Name="FeatureStartDate" Text="{Binding EventStartDate}" />
-        </Frame>
-        <Image x:Name="EventImage"/>
-
-    </VerticalStackLayout>
+            </Frame>
+            <Button Text="Take me there" BackgroundColor="Black" Clicked="Btn_clickedStartRouteNavigation" x:Name="Btn_startRouteNavigation"></Button>
+            <Frame BorderColor="Black" Padding="10">
+                <Label x:Name="FeatureDescription" Text="{Binding EventDescription}" />
+            </Frame>
+            <Frame BorderColor="Black" Padding="10">
+                <Label x:Name="FeatureNavigationDetails" Text="{Binding EventNavigationDetails}" />
+            </Frame>
+            <Frame BorderColor="Black" Padding="10">
+                <Label x:Name="FeatureStartDate" Text="{Binding EventStartDate}" />
+            </Frame>
+            <Image x:Name="EventImage"/>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>
+

@@ -6,11 +6,15 @@ public partial class FeaturePage : ContentPage
 {
 	private ArcGISFeature feature;
     private IReadOnlyList<Attachment> attachments;
+    private double X;
+    private double Y;
     
-	public FeaturePage(ArcGISFeature feature)
+	public FeaturePage(ArcGISFeature feature, double X, double Y)
 	{
         InitializeComponent();
         this.feature = feature;
+        this.X = X;
+        this.Y = Y;
         this.BindingContext = this;
         SetImageSource();
 
@@ -41,6 +45,11 @@ public partial class FeaturePage : ContentPage
         {
             EventImage.Source = ImageSource.FromStream(() => attachments.First().GetDataAsync().Result);
         }
+    }
+
+    private void Btn_clickedStartRouteNavigation(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new RouteNavigationPage(this.X, this.Y));
     }
 
 }

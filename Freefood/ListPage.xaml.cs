@@ -73,7 +73,7 @@ public partial class ListPage : ContentPage
        bool moreInfo = await DisplayAlert("Are you hungry?", "Found event near you:" + fence.Attributes["Title"].ToString(), "More Details?", "back");
        if (moreInfo)
         {
-            Navigation.PushAsync(new FeaturePage((ArcGISFeature)fence));
+            Navigation.PushAsync(new FeaturePage((ArcGISFeature)fence,(fence.Geometry as MapPoint).X, (fence.Geometry as MapPoint).Y));
         }
     }
 
@@ -118,7 +118,7 @@ public partial class ListPage : ContentPage
                 "See full info", "back");
             if (moreInfo)
             {
-                Navigation.PushAsync(new FeaturePage(tappedFeature));
+                Navigation.PushAsync(new FeaturePage(tappedFeature, e.Location.X, e.Location.Y));
             }
             return;
         }
