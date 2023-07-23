@@ -6,6 +6,7 @@ using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
 using System.Diagnostics;
+using Esri.ArcGISRuntime.Geotriggers;
 
 namespace Freefood;
 
@@ -15,44 +16,40 @@ public partial class DonationPage : ContentPage
     private GraphicsOverlay pinOverlay = new GraphicsOverlay();
     private SimpleMarkerSymbol pinSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Cross, System.Drawing.Color.Red, 10);
 
+    private FeatureTable foodFeatureTable;
+    ServiceGeodatabase serviceGeodatabase = new ServiceGeodatabase(ListMapViewModel.foodUri);
+    GeotriggerMonitor _geotriggerMonitor;
+    private LocationGeotriggerFeed _locationFeed;
+
     public DonationPage()
     {
         InitializeComponent();
-        this.BindingContext = new DonationMapViewModel();
-        mapView.Map.Loaded += Map_Loaded;
+        this.BindingContext = new ListMapViewModel();
         mapView.GeoViewTapped += OnMapViewTapped;
         mapView.GraphicsOverlays.Add(pinOverlay);
+
+        _ = StartLocationServices();
     }
 
     private async Task StartLocationServices()
     {
-        try
-        {
-            // Check if location permission granted.
-            var status = Microsoft.Maui.ApplicationModel.PermissionStatus.Unknown;
-            status = await Microsoft.Maui.ApplicationModel.Permissions.CheckStatusAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
+        var status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
 
-            // Request location permission if not granted.
-            if (status != Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
-            {
-                status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
-            }
-
-            // Start the location display once permission is granted.
-            if (status == Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
-            {
-                await mapView.LocationDisplay.DataSource.StartAsync();
-                mapView.LocationDisplay.IsEnabled = true;
-            }
-            mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
-        }
-        catch (Exception ex)
+        mapView.LocationDisplay.DataSource = locationSource;
+        if (status == Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
         {
-            Debug.WriteLine(ex);
-            await Application.Current.MainPage.DisplayAlert("Couldn't start location", ex.Message, "OK");
+            await mapView.LocationDisplay.DataSource.StartAsync();
+            mapView.LocationDisplay.IsEnabled = true;
         }
 
+        mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
+    }
 
+    public async Task LoadFeatureTable()
+    {
+        await serviceGeodatabase.LoadAsync();
+        foodFeatureTable = serviceGeodatabase.GetTable(0);
+        await foodFeatureTable.LoadAsync();
     }
 
     private void Map_Loaded(object sender, EventArgs e)
@@ -62,6 +59,13 @@ public partial class DonationPage : ContentPage
         _ = StartLocationServices();
     }
 
+    private void NavigationButton_Clicked(object sender, EventArgs e)
+    {
+        // Starts location display with auto pan mode set to Navigation.
+        mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
+
+        _ = StartLocationServices();
+    }
     private async void OnMapViewTapped(object sender, GeoViewInputEventArgs e)
     {
         /// if feature tapped, give info. 
@@ -99,16 +103,6 @@ public partial class DonationPage : ContentPage
         {
             pinOverlay.Graphics.Clear();
         }
-
-
-    }
-
-    private void NavigationButton_Clicked(object sender, EventArgs e)
-    {
-        // Starts location display with auto pan mode set to Navigation.
-        mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
-
-        _ = StartLocationServices();
     }
 
     protected override void OnDisappearing()
@@ -121,7 +115,7 @@ public partial class DonationPage : ContentPage
     {
         base.OnNavigatedTo(args);
 
-        if (mapView.Map != null) { DonationMapViewModel.Refresh(mapView.Map); mapView.GraphicsOverlays.First().Graphics.Clear(); }
+        if (mapView.Map != null) { ListMapViewModel.Refresh(mapView.Map); mapView.GraphicsOverlays.First().Graphics.Clear(); }
 
     }
 
