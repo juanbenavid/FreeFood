@@ -6,6 +6,8 @@ using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.UI;
 using Esri.ArcGISRuntime;
 using System.ComponentModel;
+using Esri.ArcGISRuntime.Symbology;
+using System.Diagnostics;
 
 namespace Freefood;
 
@@ -29,9 +31,9 @@ public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
         vm = new FindFoodViewModel(this);
         this.BindingContext = vm;
         this.featuresToDisplay = vm.featuresToDisplay;
-        _ = StartLocationServices();
         _ = Initialize();
         //_ = vm.SetAllHidden();
+        mapView.Map.Loaded += Map_Loaded;
     }
 
     private async Task Initialize()
@@ -113,17 +115,42 @@ public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
 
     private async Task StartLocationServices()
     {
-        var status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
-
-        mapView.LocationDisplay.DataSource = locationSource;
-        if (status == Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
+        try
         {
-            await mapView.LocationDisplay.DataSource.StartAsync();
-            mapView.LocationDisplay.IsEnabled = true;
+            // Check if location permission granted.
+            var status = Microsoft.Maui.ApplicationModel.PermissionStatus.Unknown;
+            status = await Microsoft.Maui.ApplicationModel.Permissions.CheckStatusAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
+
+            // Request location permission if not granted.
+            if (status != Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
+            {
+                status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
+            }
+
+            // Start the location display once permission is granted.
+            if (status == Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
+            {
+                await mapView.LocationDisplay.DataSource.StartAsync();
+                mapView.LocationDisplay.IsEnabled = true;
+            }
+            mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            await Application.Current.MainPage.DisplayAlert("Couldn't start location", ex.Message, "OK");
         }
 
-        mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
+        //var status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
 
+        //mapView.LocationDisplay.DataSource = locationSource;
+        //if (status == Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
+        //{
+        //    await mapView.LocationDisplay.DataSource.StartAsync();
+        //    mapView.LocationDisplay.IsEnabled = true;
+        //}
+
+        //mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
     }
 
 
@@ -133,6 +160,27 @@ public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
         mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Navigation;
 
         _ = StartLocationServices();
+    }
+
+    private void Map_Loaded(object sender, EventArgs e)
+    {
+        // Perform actions or set up the map here
+        // For example, add layers, set initial viewpoint, etc.
+        _ = StartLocationServices();
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        mapView.Map.Loaded -= Map_Loaded;
+    }
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+
+        if (mapView.Map != null) { ListMapViewModel.Refresh(mapView.Map); mapView.GraphicsOverlays.First().Graphics.Clear(); }
+
     }
 
 }
