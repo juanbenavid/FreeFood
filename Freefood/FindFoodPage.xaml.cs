@@ -14,6 +14,9 @@ namespace Freefood;
 public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
 {
     private SystemLocationDataSource locationSource = new SystemLocationDataSource();
+    private GraphicsOverlay pinOverlay = new GraphicsOverlay();
+    private SimpleMarkerSymbol pinSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Cross, System.Drawing.Color.Red, 10);
+
 
     //Geotriggers
     private LocationGeotriggerFeed _locationFeed;
@@ -31,6 +34,8 @@ public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
         vm = new FindFoodViewModel(this);
         this.BindingContext = vm;
         this.featuresToDisplay = vm.featuresToDisplay;
+        mapView.GeoViewTapped += OnMapViewTapped;
+        mapView.GraphicsOverlays.Add(pinOverlay);
         _ = Initialize();
         //_ = vm.SetAllHidden();
         mapView.Map.Loaded += Map_Loaded;
@@ -182,6 +187,47 @@ public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
         if (mapView.Map != null) { ListMapViewModel.Refresh(mapView.Map); mapView.GraphicsOverlays.First().Graphics.Clear(); }
 
     }
+
+    private async void OnMapViewTapped(object sender, GeoViewInputEventArgs e)
+    {
+        /// if feature tapped, give info. 
+        /// else ask to create a new feature.
+        var layer = mapView.Map.OperationalLayers[0];
+        IdentifyLayerResult identifyResult = await mapView.IdentifyLayerAsync(layer, e.Position, 2, false);
+        if (identifyResult.GeoElements.Any())
+        {
+            GeoElement tappedElement = identifyResult.GeoElements.First();
+            ArcGISFeature tappedFeature = (ArcGISFeature)tappedElement;
+            await tappedFeature.LoadAsync();
+
+            bool moreInfo = await DisplayAlert(
+                tappedFeature.Attributes["Title"]?.ToString() ?? "No Title",
+                tappedFeature.Attributes["Description"]?.ToString() ?? "No Description",
+                "See full info", "back");
+            if (moreInfo)
+            {
+                Navigation.PushAsync(new FeaturePage(tappedFeature));
+            }
+            return;
+        }
+
+        //var pinPoint = new MapPoint(e.Location.X, e.Location.Y, e.Location.SpatialReference);
+        //var grapic = new Graphic(pinPoint, pinSymbol);
+        //pinOverlay.Graphics.Add(grapic);
+
+        //bool answer = await DisplayAlert("Pin point?", "Pin a point to this location?", "Yes", "No");
+        //Debug.WriteLine("Answer: " + answer);
+        //if (answer)
+        //{
+        //    Navigation.PushAsync(new FoodFormPage(pinPoint));
+        //}
+        //else
+        //{
+        //    pinOverlay.Graphics.Clear();
+        //}
+    }
+
+
 
 }
 
