@@ -6,7 +6,7 @@
     
     <Grid>
         <!-- both children default to cell (0,0). Overlaid. -->
-        <Image Source="menu_img3.jpg"  Aspect="AspectFill"/>
+        <Image Source="menu_image_blurred.jpg"  Aspect="AspectFill"/>
         <!-- nested grid. OR StackLayout, etc. -->
         <!--<Grid>
             --><!-- GUI content here. --><!--
@@ -65,37 +65,37 @@
 
         <VerticalStackLayout Margin="32" Spacing="75">
 
-            <ImageButton Source="search_icon.svg"
-                      BorderWidth="10"
+            <ImageButton Source="find_icon_text.svg"
+                      BorderWidth="5"
                          BorderColor="White"
             x:Name="btn_goToFindFoodPage"
                 BackgroundColor="#f4c430"
                          HeightRequest="140"
                          WidthRequest="140"
                          CornerRadius="30"
-                         Padding="16"
+                         Padding="12"
             Clicked="btn_clicked_goToFindFoodPage"/>
 
-            <ImageButton Source="list_icon.svg"
+            <ImageButton Source="list_text_icon.svg"
                              
             x:Name="btn_goToListFoodPage"
                 BackgroundColor="#f4c430"
                          HeightRequest="140"
                          WidthRequest="140"
                                        CornerRadius="30"
-                                             BorderWidth="10"
+                                             BorderWidth="5"
                          BorderColor="White"
                          Padding="16"
             Clicked="btn_clicked_goToListFoodPage"/>
 
-            <ImageButton Source="donation_icon1.svg"
+            <ImageButton Source="donate_text_icon.svg"
                            
             x:Name="btn_goToDonateFoodPage"
                 BackgroundColor="#f4c430"
                          HeightRequest="140"
                          WidthRequest="140"
                                        CornerRadius="30"
-                                             BorderWidth="10"
+                                             BorderWidth="5"
                          BorderColor="White"
                          Padding="16"
             Clicked="btn_clicked_goToListFoodPage"/>

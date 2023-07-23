@@ -37,8 +37,8 @@
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
-
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="Black"/>
+		
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 
@@ -52,19 +52,30 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\app_title_icon.png" />
 	  <None Remove="Resources\Images\backimg.jpg" />
+	  <None Remove="Resources\Images\donate_text_icon.svg" />
+	  <None Remove="Resources\Images\donate_text_icon1.svg" />
 	  <None Remove="Resources\Images\donation_icon1.svg" />
 	  <None Remove="Resources\Images\donation_icon2.svg" />
 	  <None Remove="Resources\Images\esri_logo.png" />
+	  <None Remove="Resources\Images\find_icon_text.svg" />
+	  <None Remove="Resources\Images\listfood_icon_text.svg" />
 	  <None Remove="Resources\Images\list_icon.svg" />
+	  <None Remove="Resources\Images\list_text_icon.svg" />
 	  <None Remove="Resources\Images\logo_black.svg" />
 	  <None Remove="Resources\Images\logo_color.svg" />
 	  <None Remove="Resources\Images\logo_no_background.svg" />
 	  <None Remove="Resources\Images\logo_white.svg" />
+	  <None Remove="Resources\Images\menu_image_blurred.jpeg" />
 	  <None Remove="Resources\Images\menu_img1.jpg" />
 	  <None Remove="Resources\Images\menu_img2.jpg" />
 	  <None Remove="Resources\Images\menu_img3.jpg" />
 	  <None Remove="Resources\Images\recenter.svg" />
 	  <None Remove="Resources\Images\search_icon.svg" />
+	  <None Remove="Resources\Splash\splash.svg" />
+	</ItemGroup>
+  
+	<ItemGroup>
+	  <MauiSplashScreen Include="Resources\Splash\splash.svg" />
 	</ItemGroup>
   
 	<ItemGroup>
