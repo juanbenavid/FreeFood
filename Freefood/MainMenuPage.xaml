@@ -9,9 +9,9 @@
         <Image Source="menu_image_blurred.jpg"  Aspect="AspectFill"/>
         <!-- nested grid. OR StackLayout, etc. -->
 
-        <Grid RowDefinitions="*,*"
+        <!--<Grid RowDefinitions="*,*"
                 ColumnDefinitions="*,*">
-            <!-- First Row, First Column -->
+            --><!-- First Row, First Column --><!--
 
 
             <ImageButton Source="find_icon_text.svg"
@@ -28,7 +28,7 @@
                          Clicked="btn_clicked_goToFindFoodPage"/>
 
 
-            <!-- First Row, Second Column -->
+            --><!-- First Row, Second Column -->
             <!--<ImageButton Source="donate_text_icon.svg"
                            
                          x:Name="btn_goToDonateFoodPage"
@@ -43,7 +43,7 @@
                          Grid.Column="1"
                          Clicked="btn_clicked_goToListFoodPage"/>-->
 
-            <!-- Second Row, First Column -->
+            <!-- Second Row, First Column --><!--
             <ImageButton Source="story_icon.svg"
                          x:Name="btn_goToStoryMap"
                          BackgroundColor="#f4c430"
@@ -57,7 +57,7 @@
                          Grid.Column="0"
                          Clicked="btn_clicked_goToStoryMap"/>
 
-            <!-- Second Row, Second Column -->
+            --><!-- Second Row, Second Column --><!--
             <ImageButton Source="dashboard1.svg"
                              
                         x:Name="btn_goToDashboard"
@@ -71,7 +71,87 @@
                          Grid.Row="1"
                         Grid.Column="1"
                         Clicked="btn_clicked_goToDashboard"/>
-        </Grid>
+        </Grid>-->
+
+
+
+        <VerticalStackLayout Margin="32" Spacing="75">
+
+            <ImageButton Source="find_icon_text.svg"
+                      BorderWidth="5"
+                         BorderColor="White"
+            x:Name="btn_goToFindFoodPage"
+                BackgroundColor="#f4c430"
+                         HeightRequest="140"
+                         WidthRequest="140"
+                         CornerRadius="30"
+                         Padding="16"
+            Clicked="btn_clicked_goToFindFoodPage"/>
+
+            <!--<ImageButton Source="list_text_icon.svg"
+                             
+            x:Name="btn_goToListFoodPage"
+                BackgroundColor="#f4c430"
+                         HeightRequest="140"
+                         WidthRequest="140"
+                                       CornerRadius="30"
+                                             BorderWidth="5"
+                         BorderColor="White"
+                         Padding="16"
+            Clicked="btn_clicked_goToListFoodPage"/>-->
+
+            <ImageButton Source="story_icon.svg"
+                         x:Name="btn_goToStoryMap"
+                         BackgroundColor="#f4c430"
+                         HeightRequest="140"
+                         WidthRequest="140"
+                         CornerRadius="30"
+                         BorderWidth="5"
+                         BorderColor="White"
+                         Padding="16"
+                         Clicked="btn_clicked_goToStoryMap"/>
+
+            
+            <!--<ImageButton Source="donate_text_icon.svg"
+                           
+            x:Name="btn_goToDonateFoodPage"
+                BackgroundColor="#f4c430"
+                         HeightRequest="140"
+                         WidthRequest="140"
+                                       CornerRadius="30"
+                                             BorderWidth="5"
+                         BorderColor="White"
+                         Padding="16"
+            Clicked="btn_clicked_goToListFoodPage"/>-->
+
+            <ImageButton Source="dashboard1.svg"
+                             
+                        x:Name="btn_goToDashboard"
+                        BackgroundColor="#f4c430"
+                        HeightRequest="140"
+                        WidthRequest="140"
+                        CornerRadius="30"
+                        BorderWidth="5"
+                        BorderColor="White"
+                        Padding="16"
+                
+                        Clicked="btn_clicked_goToDashboard"/>
+
+        </VerticalStackLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <!--<Grid>
          
             <Grid.RowDefinitions>

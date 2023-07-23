@@ -49,7 +49,7 @@ public partial class ListPage : ContentPage
     {
         await LoadFeatureTable();
         _locationFeed = new LocationGeotriggerFeed(locationSource);
-        var fenceParameters = new FeatureFenceParameters(foodFeatureTable, 100);
+        var fenceParameters = new FeatureFenceParameters(foodFeatureTable, 25);
         var fenceGeotrigger = new FenceGeotrigger(_locationFeed, FenceRuleType.Enter, fenceParameters);
         // Create a GeotriggerMonitor to monitor the FenceGeotrigger created previously.
         _geotriggerMonitor = new GeotriggerMonitor(fenceGeotrigger);
