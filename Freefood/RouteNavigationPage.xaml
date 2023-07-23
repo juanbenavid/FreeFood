@@ -6,7 +6,7 @@
              Title="Navigation">
     <Grid>
         <esri:MapView x:Name="NavigationMapView" Map="{Binding Map}" />
-
+        <ActivityIndicator IsRunning="true" x:Name="activityIndicator" ScaleX="0.5" ScaleY="0.5" />
         <Grid Padding="5"
                   MaximumWidthRequest="200"
                   RowDefinitions="*, *, *, *"

@@ -109,6 +109,8 @@ public partial class RouteNavigationPage : ContentPage, IDisposable
             // Set the map viewpoint to show the entire route.
             await NavigationMapView.SetViewpointGeometryAsync(_route.RouteGeometry, 100);
 
+            activityIndicator.IsRunning = false;
+
             // Enable the navigation button.
             //StartNavigationButton.IsEnabled = true;
 
@@ -117,7 +119,9 @@ public partial class RouteNavigationPage : ContentPage, IDisposable
         }
         catch (Exception e)
         {
+            activityIndicator.IsRunning = false;
             await Application.Current.MainPage.DisplayAlert("Error", e.Message, "OK");
+
         }
     }
 
