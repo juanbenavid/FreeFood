@@ -101,7 +101,7 @@ public partial class FoodFormPage : ContentPage
         await foodFeatureTable.AddFeatureAsync(feature);
         await serviceGeodatabase.ApplyEditsAsync();
         feature.Refresh();
-        await Application.Current.MainPage.DisplayAlert("Success", $"Created feature {feature.Attributes["objectid"]}", "OK");
+        await Application.Current.MainPage.DisplayAlert("Success", $"Created event:  {feature.Attributes["Title"]}", "OK");
     }
 
 }
