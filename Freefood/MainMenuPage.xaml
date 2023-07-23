@@ -2,18 +2,107 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Freefood.MainMenuPage"
-             Title="Find My Food">
-    <VerticalStackLayout Margin="16" Spacing="32">
-        
-        <Button
-            Text="Find Food"
+            >
+    
+    <Grid>
+        <!-- both children default to cell (0,0). Overlaid. -->
+        <Image Source="menu_image_blurred.jpg"  Aspect="AspectFill"/>
+        <!-- nested grid. OR StackLayout, etc. -->
+        <!--<Grid>
+            --><!-- GUI content here. --><!--
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ImageButton Source="search_icon.svg"
+                      
             x:Name="btn_goToFindFoodPage"
+            Grid.Row="1"
+                Grid.Column="2"
+                BackgroundColor="Yellow"
             Clicked="btn_clicked_goToFindFoodPage"/>
 
-        <Button
-            Text="List/Donate Food"
+            <ImageButton Source="list_icon.svg"
+                             
             x:Name="btn_goToListFoodPage"
+                           Grid.Row="2"
+                Grid.Column="2"
+                BackgroundColor="Yellow"
+                
             Clicked="btn_clicked_goToListFoodPage"/>
+                
+            <ImageButton Source="donation_icon1.svg"
+                           
+            x:Name="btn_goToDonateFoodPage"
+                           Grid.Row="3"
+                Grid.Column="2"
+                BackgroundColor="Yellow"
+                
+            Clicked="btn_clicked_goToListFoodPage"/>
+
+
+
+            --><!--<Image Source="esri_logo.png"
+                   Grid.Row="3"
+                   Grid.ColumnSpan="2"
+                   BackgroundColor="GhostWhite"
+                   >
+                <Image.Shadow>
+                    <Shadow Brush="Black"
+                Offset="20,20"
+                Radius="40"
+                Opacity="0.4" />
+                </Image.Shadow>
+            </Image>--><!--
+
+        </Grid>-->
+
+        <VerticalStackLayout Margin="32" Spacing="75">
+
+            <ImageButton Source="find_icon_text.svg"
+                      BorderWidth="5"
+                         BorderColor="White"
+            x:Name="btn_goToFindFoodPage"
+                BackgroundColor="#f4c430"
+                         HeightRequest="140"
+                         WidthRequest="140"
+                         CornerRadius="30"
+                         Padding="12"
+            Clicked="btn_clicked_goToFindFoodPage"/>
+
+            <ImageButton Source="list_text_icon.svg"
+                             
+            x:Name="btn_goToListFoodPage"
+                BackgroundColor="#f4c430"
+                         HeightRequest="140"
+                         WidthRequest="140"
+                                       CornerRadius="30"
+                                             BorderWidth="5"
+                         BorderColor="White"
+                         Padding="16"
+            Clicked="btn_clicked_goToListFoodPage"/>
+
+            <ImageButton Source="donate_text_icon.svg"
+                           
+            x:Name="btn_goToDonateFoodPage"
+                BackgroundColor="#f4c430"
+                         HeightRequest="140"
+                         WidthRequest="140"
+                                       CornerRadius="30"
+                                             BorderWidth="5"
+                         BorderColor="White"
+                         Padding="16"
+            Clicked="btn_clicked_goToListFoodPage"/>
+
+        </VerticalStackLayout>
         
-    </VerticalStackLayout>
+    </Grid>
+        
+
 </ContentPage>
