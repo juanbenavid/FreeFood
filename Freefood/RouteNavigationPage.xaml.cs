@@ -11,6 +11,7 @@ using Esri.ArcGISRuntime.Tasks.NetworkAnalysis;
 using Color = System.Drawing.Color;
 using Location = Esri.ArcGISRuntime.Location.Location;
 using static System.Formats.Asn1.AsnWriter;
+using Esri.ArcGISRuntime.Geotriggers;
 
 namespace Freefood;
 
@@ -111,10 +112,9 @@ public partial class RouteNavigationPage : ContentPage, IDisposable
 
             activityIndicator.IsRunning = false;
 
-            // Enable the navigation button.
-            //StartNavigationButton.IsEnabled = true;
+            await Application.Current.MainPage.DisplayAlert("Route found!", 
+                "Should take you " + _route.TravelTime.Minutes + " Minutes" , "OK");
 
-            //StartNavigation();
 
         }
         catch (Exception e)
@@ -124,6 +124,7 @@ public partial class RouteNavigationPage : ContentPage, IDisposable
 
         }
     }
+ 
 
     private void StartNavigation()
     {

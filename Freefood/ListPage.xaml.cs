@@ -70,13 +70,14 @@ public partial class ListPage : ContentPage
 
     private async Task DisplayTriggerAlert(GeoElement fence)
     {
-       bool moreInfo = await DisplayAlert("Are you hungry?", "Found event near you: " + fence.Attributes["Title"].ToString(), "More Details?", "Back");
-       if (moreInfo)
+        string action = await DisplayActionSheet("Found food near you!", "Back", null, "More details", "I'm here and the food is gone :(");
+        Debug.WriteLine("Action: " + action);
+       if (action == "More details")
         {
             Navigation.PushAsync(new FeaturePage((ArcGISFeature)fence,(fence.Geometry as MapPoint).X, (fence.Geometry as MapPoint).Y));
         }
     }
-
+ 
     public async Task LoadFeatureTable()
     {
         await serviceGeodatabase.LoadAsync();
