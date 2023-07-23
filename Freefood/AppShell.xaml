@@ -12,16 +12,9 @@
         Route="MainMenuPage"/>
 
     <ShellContent
-        Title="Find Food"
-        ContentTemplate="{DataTemplate local:FindFoodPage}"
-        Route="FindFoodPage"/>
-    
-    <ShellContent
         Title="List Food"
         ContentTemplate="{DataTemplate local:ListPage}"
         Route="ListPage" />
-
-
 
     <ShellContent
         Title="FoodFormPage"

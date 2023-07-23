@@ -1,5 +1,6 @@
 ﻿using Esri.ArcGISRuntime.Data;
 using Esri.ArcGISRuntime.Geometry;
+using Esri.ArcGISRuntime.Geotriggers;
 using Esri.ArcGISRuntime.Location;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
@@ -12,55 +13,66 @@ public partial class ListPage : ContentPage
     private SystemLocationDataSource locationSource = new SystemLocationDataSource();
     private GraphicsOverlay pinOverlay = new GraphicsOverlay();
     private SimpleMarkerSymbol pinSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Cross, System.Drawing.Color.Red, 10);
-    
+
+    private FeatureTable foodFeatureTable;
+    ServiceGeodatabase serviceGeodatabase = new ServiceGeodatabase(ListMapViewModel.foodUri);
+    GeotriggerMonitor _geotriggerMonitor;
+    private LocationGeotriggerFeed _locationFeed;
+
     public ListPage()
     {
         InitializeComponent();
         this.BindingContext = new ListMapViewModel();
-        mapView.Map.Loaded += Map_Loaded;
         mapView.GeoViewTapped += OnMapViewTapped;
         mapView.GraphicsOverlays.Add(pinOverlay);
+
+        _ = StartLocationServices();
+        InitializeGeotrigger();
 
     }
 
     private async Task StartLocationServices()
     {
-        try
-        {
-            // Check if location permission granted.
-            var status = Microsoft.Maui.ApplicationModel.PermissionStatus.Unknown;
-            status = await Microsoft.Maui.ApplicationModel.Permissions.CheckStatusAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
+        var status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
 
-            // Request location permission if not granted.
-            if (status != Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
-            {
-                status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
-            }
-
-            // Start the location display once permission is granted.
-            if (status == Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
-            {
-                await mapView.LocationDisplay.DataSource.StartAsync();
-                mapView.LocationDisplay.IsEnabled = true;
-            }
-            mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
-        }
-        catch (Exception ex)
+        mapView.LocationDisplay.DataSource = locationSource;
+        if (status == Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
         {
-            Debug.WriteLine(ex);
-            await Application.Current.MainPage.DisplayAlert("Couldn't start location", ex.Message, "OK");
+            await mapView.LocationDisplay.DataSource.StartAsync();
+            mapView.LocationDisplay.IsEnabled = true;
         }
 
-        //var status = await Microsoft.Maui.ApplicationModel.Permissions.RequestAsync<Microsoft.Maui.ApplicationModel.Permissions.LocationWhenInUse>();
- 
-        //mapView.LocationDisplay.DataSource = locationSource;
-        //if (status == Microsoft.Maui.ApplicationModel.PermissionStatus.Granted)
-        //{
-        //    await mapView.LocationDisplay.DataSource.StartAsync();
-        //    mapView.LocationDisplay.IsEnabled = true;
-        //}
+        mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
+    }
 
-        //mapView.LocationDisplay.AutoPanMode = LocationDisplayAutoPanMode.Recenter;
+    private async Task InitializeGeotrigger()
+    {
+        await LoadFeatureTable();
+        _locationFeed = new LocationGeotriggerFeed(locationSource);
+        var fenceParameters = new FeatureFenceParameters(foodFeatureTable, 100);
+        var fenceGeotrigger = new FenceGeotrigger(_locationFeed, FenceRuleType.Enter, fenceParameters);
+        // Create a GeotriggerMonitor to monitor the FenceGeotrigger created previously.
+        _geotriggerMonitor = new GeotriggerMonitor(fenceGeotrigger);
+
+        // Handle notification events (when a fence is entered).
+        _geotriggerMonitor.Notification += NotifyFoodAreaEntered;
+
+        // Start monitoring.
+        await _geotriggerMonitor.StartAsync();
+    }
+
+    private void NotifyFoodAreaEntered(object sender, GeotriggerNotificationInfo e)
+    {
+        GeoElement fence = (e as FenceGeotriggerNotificationInfo).FenceGeoElement;
+        Dispatcher.Dispatch(async () => await DisplayAlert("Are you hungry?", fence.Attributes["Title"].ToString(), "ok"));
+
+    }
+
+    public async Task LoadFeatureTable()
+    {
+        await serviceGeodatabase.LoadAsync();
+        foodFeatureTable = serviceGeodatabase.GetTable(0);
+        await foodFeatureTable.LoadAsync();
     }
 
     private void Map_Loaded(object sender, EventArgs e)
@@ -68,13 +80,8 @@ public partial class ListPage : ContentPage
         // Perform actions or set up the map here
         // For example, add layers, set initial viewpoint, etc.
         _ = StartLocationServices();
+        _ = InitializeGeotrigger();
     }
-
-    private async void FindFoodButtonClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("//FindFoodPage");
-    }
-
 
     private void NavigationButton_Clicked(object sender, EventArgs e)
     {
