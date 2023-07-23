@@ -90,17 +90,17 @@ public partial class RouteNavigationPage : ContentPage, IDisposable
             NavigationMapView.GraphicsOverlays.Add(new GraphicsOverlay());
 
             // Add graphics for the stops.
-            SimpleMarkerSymbol stopSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Diamond, Color.Red, 30);
+            SimpleMarkerSymbol stopSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Circle, Color.Red, 20);
             NavigationMapView.GraphicsOverlays[0].Graphics.Add(new Graphic(_destination, stopSymbol));
 
-            SimpleMarkerSymbol startSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Diamond, Color.Green, 30);
+            SimpleMarkerSymbol startSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Circle, Color.DarkSeaGreen, 20);
             NavigationMapView.GraphicsOverlays[0].Graphics.Add(new Graphic(_origin, startSymbol));
 
             // Create a graphic (with a dashed line symbol) to represent the route.
-            _routeAheadGraphic = new Graphic(_route.RouteGeometry) { Symbol = new SimpleLineSymbol(SimpleLineSymbolStyle.Dash, Color.BlueViolet, 5) };
+            _routeAheadGraphic = new Graphic(_route.RouteGeometry) { Symbol = new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Color.DodgerBlue, 5) };
 
             // Create a graphic (solid) to represent the route that's been traveled (initially empty).
-            _routeTraveledGraphic = new Graphic { Symbol = new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Color.LightBlue, 3) };
+            _routeTraveledGraphic = new Graphic { Symbol = new SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Color.DarkBlue, 3) };
 
             // Add the route graphics to the map view.
             NavigationMapView.GraphicsOverlays[0].Graphics.Add(_routeAheadGraphic);
