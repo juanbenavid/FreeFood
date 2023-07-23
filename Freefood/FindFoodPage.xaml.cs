@@ -5,10 +5,16 @@ using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.UI;
 using Esri.ArcGISRuntime;
+<<<<<<< HEAD
 using System.ComponentModel;
 using Esri.ArcGISRuntime.Symbology;
 using System.Diagnostics;
 
+=======
+using System.ComponentModel;
+using System.Diagnostics;
+
+>>>>>>> juan/geotrigger
 namespace Freefood;
 
 public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
@@ -34,11 +40,52 @@ public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
         vm = new FindFoodViewModel(this);
         this.BindingContext = vm;
         this.featuresToDisplay = vm.featuresToDisplay;
+<<<<<<< HEAD
         mapView.GeoViewTapped += OnMapViewTapped;
         mapView.GraphicsOverlays.Add(pinOverlay);
         _ = Initialize();
         //_ = vm.SetAllHidden();
         mapView.Map.Loaded += Map_Loaded;
+=======
+        _ = StartLocationServices();
+        //_ = Initialize();
+        //_ = vm.SetAllHidden();
+
+        InitializeGeotriggerJuan();
+    }
+
+    private FeatureTable foodFeatureTable;
+    ServiceGeodatabase serviceGeodatabase = new ServiceGeodatabase(ListMapViewModel.foodUri);
+    GeotriggerMonitor _geotriggerMonitor;
+    private async Task InitializeGeotriggerJuan()
+    {
+        await LoadFeatureTable();
+        _locationFeed = new LocationGeotriggerFeed(locationSource);
+        var fenceParameters = new FeatureFenceParameters(foodFeatureTable, 100);
+        var fenceGeotrigger = new FenceGeotrigger(_locationFeed, FenceRuleType.Enter, fenceParameters);
+        // Create a GeotriggerMonitor to monitor the FenceGeotrigger created previously.
+        _geotriggerMonitor = new GeotriggerMonitor(fenceGeotrigger);
+
+        // Handle notification events (when a fence is entered).
+        _geotriggerMonitor.Notification += NotifyFoodAreaEntered;
+
+        // Start monitoring.
+        await _geotriggerMonitor.StartAsync();
+    }
+
+    private void NotifyFoodAreaEntered(object sender, GeotriggerNotificationInfo e)
+    {
+        GeoElement fence = (e as FenceGeotriggerNotificationInfo).FenceGeoElement;
+        Dispatcher.Dispatch(async () => await DisplayAlert("Are you hungry?", fence.Attributes["Title"].ToString(),"ok"));
+        
+    }
+
+    public async Task LoadFeatureTable()
+    {
+        await serviceGeodatabase.LoadAsync();
+        foodFeatureTable = serviceGeodatabase.GetTable(0);
+        await foodFeatureTable.LoadAsync();
+>>>>>>> juan/geotrigger
     }
 
     private async Task Initialize()

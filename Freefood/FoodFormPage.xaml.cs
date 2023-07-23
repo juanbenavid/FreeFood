@@ -26,11 +26,6 @@ public partial class FoodFormPage : ContentPage
         this.pinPoint = pinPoint;
     }
 
-    //public async void BackHome(object sender, EventArgs e)
-    //{
-    //    await Shell.Current.GoToAsync("//ListPage");
-    //}
-
     public async void SubmitFeatureClicked (object sender, EventArgs e)
     {
         var dic = new Dictionary<string,string>();
@@ -39,8 +34,8 @@ public partial class FoodFormPage : ContentPage
         dic["Description"] = EventDescription.Text;
         dic["NavigationDetails"] = EventDirections.Text;
         dic["Donation"] = DonationCheck.IsChecked ? "Yes" : "No";
-        dic["StartDate"] = DateTime.Now.ToString("yyyy-mm-dd hh:mm:ss tt");
-        dic["EndDate"] = DateTime.Now.AddDays(1).ToString("yyyy-mm-dd hh:mm:ss tt");
+        dic["StartDate"] = DateTime.Now.ToString("yyyy-mm-dd hh:mm:ss");
+        dic["EndDate"] = DateTime.Now.AddDays(1).ToString("yyyy-mm-dd hh:mm:ss");
 
        
         await AddFoodFeature(pinPoint, dic);
