@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
              x:Class="Freefood.FindFoodPage"
-             Title="FindFoodPage">
+             Title="Find Food">
     <VerticalStackLayout>
         <esri:MapView x:Name="mapView" Map="{Binding Map}" />
     </VerticalStackLayout>
