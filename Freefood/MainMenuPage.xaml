@@ -98,7 +98,7 @@
                                              BorderWidth="5"
                          BorderColor="White"
                          Padding="16"
-            Clicked="btn_clicked_goToListFoodPage"/>
+            Clicked="btn_clicked_goToDonationFoodPage"/>
 
         </VerticalStackLayout>
         

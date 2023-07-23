@@ -19,4 +19,9 @@ public partial class MainMenuPage : ContentPage
     {
         Navigation.PushAsync(new ListPage());
     }
+
+    private void btn_clicked_goToDonationFoodPage(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new DonationPage());
+    }
 }
