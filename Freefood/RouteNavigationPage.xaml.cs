@@ -49,7 +49,7 @@ public partial class RouteNavigationPage : ContentPage, IDisposable
 
     private async Task Initialize()
     {
-       try
+        try
         {
             // Create the route task, using the online routing service.
             RouteTask routeTask = await RouteTask.CreateAsync(_routingUri);
@@ -61,14 +61,21 @@ public partial class RouteNavigationPage : ContentPage, IDisposable
             routeParams.ReturnDirections = true;
             routeParams.ReturnStops = true;
             routeParams.ReturnRoutes = true;
-            routeParams.OutputSpatialReference = SpatialReferences.Wgs84;
+            routeParams.OutputSpatialReference = SpatialReferences.WebMercator;
+
+            GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+
+            CancellationTokenSource _cancelTokenSource = new CancellationTokenSource();
+
+            Microsoft.Maui.Devices.Sensors.Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+
 
             // Create stops for each location.
-            MapPoint _startingPoint = new MapPoint(-117.173034, 32.712327, SpatialReferences.Wgs84);
-            MapPoint _destination =   new MapPoint(dest_x, dest_y, SpatialReferences.Wgs84);
+            MapPoint _origin = new MapPoint(location.Longitude, location.Latitude, SpatialReferences.Wgs84);
+            MapPoint _destination = new MapPoint(dest_x, dest_y, SpatialReferences.WebMercator);
 
             // Create stops for each location.
-            Stop stop1 = new Stop(_startingPoint) { Name = "origin" };
+            Stop stop1 = new Stop(_origin) { Name = "origin" };
             Stop stop2 = new Stop(_destination) { Name = "destination" };
 
             // Assign the stops to the route parameters.
@@ -83,8 +90,11 @@ public partial class RouteNavigationPage : ContentPage, IDisposable
             NavigationMapView.GraphicsOverlays.Add(new GraphicsOverlay());
 
             // Add graphics for the stops.
-            SimpleMarkerSymbol stopSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Diamond, Color.OrangeRed, 20);
+            SimpleMarkerSymbol stopSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Diamond, Color.Red, 30);
             NavigationMapView.GraphicsOverlays[0].Graphics.Add(new Graphic(_destination, stopSymbol));
+
+            SimpleMarkerSymbol startSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Diamond, Color.Green, 30);
+            NavigationMapView.GraphicsOverlays[0].Graphics.Add(new Graphic(_origin, startSymbol));
 
             // Create a graphic (with a dashed line symbol) to represent the route.
             _routeAheadGraphic = new Graphic(_route.RouteGeometry) { Symbol = new SimpleLineSymbol(SimpleLineSymbolStyle.Dash, Color.BlueViolet, 5) };
@@ -102,7 +112,7 @@ public partial class RouteNavigationPage : ContentPage, IDisposable
             // Enable the navigation button.
             //StartNavigationButton.IsEnabled = true;
 
-            StartNavigation();
+            //StartNavigation();
 
         }
         catch (Exception e)
@@ -128,13 +138,13 @@ public partial class RouteNavigationPage : ContentPage, IDisposable
         //NavigationMapView.LocationDisplay.AutoPanModeChanged += AutoPanModeChanged;
 
         // Use this instead if you want real location:
-        // MyMapView.LocationDisplay.DataSource = new RouteTrackerLocationDataSource(new SystemLocationDataSource(), _tracker);
+        NavigationMapView.LocationDisplay.DataSource = new RouteTrackerLocationDataSource( _tracker, new SystemLocationDataSource());
 
         // Enable the location display (this wil start the location data source).
         NavigationMapView.LocationDisplay.IsEnabled = true;
 
         // Show the message block for text output.
-        //MessagesTextBlock.IsVisible = true;
+        MessagesTextBlock.IsVisible = true;
     }
 
     private void TrackingStatusUpdated(object sender, RouteTrackerTrackingStatusChangedEventArgs e)

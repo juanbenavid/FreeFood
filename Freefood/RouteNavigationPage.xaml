@@ -27,7 +27,7 @@
                              Padding="8"
                              />
 
-            <Label x:Name="MessagesTextBlock" Text=""/>
+            <Label x:Name="MessagesTextBlock" Text="" IsVisible="false"/>
 
         </Grid>
 
