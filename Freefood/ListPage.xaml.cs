@@ -70,6 +70,12 @@ public partial class ListPage : ContentPage
         _ = StartLocationServices();
     }
 
+    private async void FindFoodButtonClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//FindFoodPage");
+    }
+
+
     private void NavigationButton_Clicked(object sender, EventArgs e)
     {
         // Starts location display with auto pan mode set to Navigation.
