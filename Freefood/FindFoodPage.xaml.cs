@@ -31,7 +31,7 @@ public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
         this.featuresToDisplay = vm.featuresToDisplay;
         _ = StartLocationServices();
         _ = Initialize();
-        _ = vm.SetAllHidden();
+        //_ = vm.SetAllHidden();
     }
 
     private async Task Initialize()
@@ -39,18 +39,18 @@ public partial class FindFoodPage : ContentPage, INotifyPropertyChanged
         foodPoints = ((FeatureLayer)mapView.Map.OperationalLayers[0]).FeatureTable as ServiceFeatureTable;
         await locationSource?.StartAsync();
 
-        FeatureQueryResult allFeatures = await featuresToDisplay.QueryFeaturesAsync(null);
-        foreach (var feature in allFeatures)
-        {
-            for (int i = 0; i < allFeatures.Count<Feature>(); i++)
-            {
-                _hiddenFeatures.Add(allFeatures.ElementAt<Feature>(i));
-            }
-        }
+        //FeatureQueryResult allFeatures = await featuresToDisplay.QueryFeaturesAsync(null);
+        //foreach (var feature in allFeatures)
+        //{
+        //    for (int i = 0; i < allFeatures.Count<Feature>(); i++)
+        //    {
+        //        _hiddenFeatures.Add(allFeatures.ElementAt<Feature>(i));
+        //    }
+        //}
 
-        _locationFeed = new LocationGeotriggerFeed(locationSource);
-        _foodMonitor = CreateGeotriggerMonitor(foodPoints, 3000, "Food Geotrigger");
-        await _foodMonitor?.StartAsync();
+        //_locationFeed = new LocationGeotriggerFeed(locationSource);
+        //_foodMonitor = CreateGeotriggerMonitor(foodPoints, 3000, "Food Geotrigger");
+        //await _foodMonitor?.StartAsync();
 
 
     }
