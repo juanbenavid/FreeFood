@@ -64,8 +64,17 @@ public partial class ListPage : ContentPage
     private void NotifyFoodAreaEntered(object sender, GeotriggerNotificationInfo e)
     {
         GeoElement fence = (e as FenceGeotriggerNotificationInfo).FenceGeoElement;
-        Dispatcher.Dispatch(async () => await DisplayAlert("Are you hungry?", fence.Attributes["Title"].ToString(), "ok"));
+        Dispatcher.Dispatch(async () => await DisplayTriggerAlert(fence));
 
+    }
+
+    private async Task DisplayTriggerAlert(GeoElement fence)
+    {
+       bool moreInfo = await DisplayAlert("Are you hungry?", "Found event near you:" + fence.Attributes["Title"].ToString(), "More Details?", "back");
+       if (moreInfo)
+        {
+            Navigation.PushAsync(new FeaturePage((ArcGISFeature)fence));
+        }
     }
 
     public async Task LoadFeatureTable()
