@@ -8,6 +8,7 @@
             <Label x:Name="FeatureTitle" Text="{Binding EventTitle}" TextColor="MediumPurple"
                     FontAttributes="Bold" FontSize="Large" />
         </Frame>
+        <Button Text="Take me there" BackgroundColor="Black" Clicked="Btn_clickedStartRouteNavigation" x:Name="Btn_startRouteNavigation"></Button>
         <Frame BorderColor="Black" Padding="10">
             <Label x:Name="FeatureDescription" Text="{Binding EventDescription}" />
         </Frame>
@@ -21,3 +22,4 @@
 
     </VerticalStackLayout>
 </ContentPage>
+

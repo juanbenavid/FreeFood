@@ -70,11 +70,6 @@ public partial class ListPage : ContentPage
         _ = StartLocationServices();
     }
 
-    private async void FindFoodButtonClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("//FindFoodPage");
-    }
-
 
     private void NavigationButton_Clicked(object sender, EventArgs e)
     {
@@ -102,7 +97,7 @@ public partial class ListPage : ContentPage
                 "See full info", "back");
             if (moreInfo)
             {
-                Navigation.PushAsync(new FeaturePage(tappedFeature));
+                Navigation.PushAsync(new FeaturePage(tappedFeature, e.Location.X, e.Location.Y));
             }
             return;
         }
