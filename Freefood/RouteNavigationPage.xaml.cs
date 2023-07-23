@@ -120,7 +120,7 @@ public partial class RouteNavigationPage : ContentPage, IDisposable
         catch (Exception e)
         {
             activityIndicator.IsRunning = false;
-            await Application.Current.MainPage.DisplayAlert("Error", e.Message, "OK");
+            await Application.Current.MainPage.DisplayAlert("Error", "No routes available", "OK");
 
         }
     }
