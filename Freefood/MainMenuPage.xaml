@@ -58,7 +58,7 @@
                          Clicked="btn_clicked_goToStoryMap"/>
 
             <!-- Second Row, Second Column -->
-            <ImageButton Source="dashboard_icon.svg"
+            <ImageButton Source="dashboard1.svg"
                              
                         x:Name="btn_goToDashboard"
                         BackgroundColor="#f4c430"

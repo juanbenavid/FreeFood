@@ -52,9 +52,7 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\app_title_icon.png" />
 	  <None Remove="Resources\Images\backimg.jpg" />
-	  <None Remove="Resources\Images\dash.svg" />
-	  <None Remove="Resources\Images\dashboard_icon.png" />
-	  <None Remove="Resources\Images\dashboard_icon.svg" />
+	  <None Remove="Resources\Images\Dashboard1.svg" />
 	  <None Remove="Resources\Images\donate_text_icon.svg" />
 	  <None Remove="Resources\Images\donate_text_icon1.svg" />
 	  <None Remove="Resources\Images\donation_icon1.svg" />
@@ -74,9 +72,7 @@
 	  <None Remove="Resources\Images\menu_img3.jpg" />
 	  <None Remove="Resources\Images\recenter.svg" />
 	  <None Remove="Resources\Images\search_icon.svg" />
-	  <None Remove="Resources\Images\story.svg" />
 	  <None Remove="Resources\Images\story_icon.png" />
-	  <None Remove="Resources\Images\story_icon.svg" />
 	  <None Remove="Resources\Splash\splash.svg" />
 	</ItemGroup>
   
