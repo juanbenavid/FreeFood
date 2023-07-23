@@ -273,6 +273,11 @@ public partial class RouteNavigationPage : ContentPage, IDisposable
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
+#if ANDROID
+        Android.Content.Intent intent = new Android.Content.Intent(Android.App.Application.Context, typeof(ForegroundService));
+        Android.App.Application.Context.StartForegroundService(intent);
+#endif
+
 
         if (NavigationMapView.Map != null) { ListMapViewModel.Refresh(NavigationMapView.Map); NavigationMapView.GraphicsOverlays.First().Graphics.Clear(); }
 
