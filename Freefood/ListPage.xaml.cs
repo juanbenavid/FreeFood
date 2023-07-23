@@ -49,7 +49,7 @@ public partial class ListPage : ContentPage
     {
         await LoadFeatureTable();
         _locationFeed = new LocationGeotriggerFeed(locationSource);
-        var fenceParameters = new FeatureFenceParameters(foodFeatureTable, 100);
+        var fenceParameters = new FeatureFenceParameters(foodFeatureTable, 10);
         var fenceGeotrigger = new FenceGeotrigger(_locationFeed, FenceRuleType.Enter, fenceParameters);
         // Create a GeotriggerMonitor to monitor the FenceGeotrigger created previously.
         _geotriggerMonitor = new GeotriggerMonitor(fenceGeotrigger);
@@ -70,10 +70,13 @@ public partial class ListPage : ContentPage
 
     private async Task DisplayTriggerAlert(GeoElement fence)
     {
-       bool moreInfo = await DisplayAlert("Are you hungry?", "Found event near you:" + fence.Attributes["Title"].ToString(), "More Details?", "back");
-       if (moreInfo)
+       bool foodAvailable = await DisplayAlert("You're near an event!", "is the food still there?", "Yes", "No");
+       if (!foodAvailable)
         {
-            Navigation.PushAsync(new FeaturePage((ArcGISFeature)fence));
+           await ((ArcGISFeature)fence).LoadAsync();
+           ((ArcGISFeature)fence).Attributes["Gone"] = 1;
+            await serviceGeodatabase.ApplyEditsAsync();
+
         }
     }
 
