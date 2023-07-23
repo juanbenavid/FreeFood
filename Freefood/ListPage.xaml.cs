@@ -116,7 +116,7 @@ public partial class ListPage : ContentPage
             bool moreInfo = await DisplayAlert(
                 tappedFeature.Attributes["Title"]?.ToString() ?? "No Title", 
                 tappedFeature.Attributes["Description"]?.ToString() ?? "No Description",
-                "See full info", "back");
+                "See full info", "Back");
             if (moreInfo)
             {
                 Navigation.PushAsync(new FeaturePage(tappedFeature, e.Location.X, e.Location.Y));
