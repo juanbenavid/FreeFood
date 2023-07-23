@@ -70,7 +70,7 @@ public partial class ListPage : ContentPage
 
     private async Task DisplayTriggerAlert(GeoElement fence)
     {
-        string action = await DisplayActionSheet("Found food near you!", "Back", null, "More details", "I'm here and the food is gone :(");
+        string action = await DisplayActionSheet(fence.Attributes["Title"].ToString() + " Near you!", "Back", null, "More details", "I'm here and the food is gone 😢");
         Debug.WriteLine("Action: " + action);
        if (action == "More details")
         {

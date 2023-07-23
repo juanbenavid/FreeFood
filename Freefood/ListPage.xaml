@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
              x:Class="Freefood.ListPage"
-            Title="Submit a food event">
+            Title="">
 
     <Grid>
         <esri:MapView x:Name="mapView" Map="{Binding Map}" />

@@ -20,16 +20,16 @@
                          x:Name="btn_goToFindFoodPage"
                          BackgroundColor="#f4c430"
                          HeightRequest="140"
-                         WidthRequest="140"
                          CornerRadius="30"
                          Padding="12"
                          Grid.Row="0"
                          Grid.Column="0"
+                         Grid.ColumnSpan="2"
                          Clicked="btn_clicked_goToFindFoodPage"/>
 
 
             <!-- First Row, Second Column -->
-            <ImageButton Source="donate_text_icon.svg"
+            <!--<ImageButton Source="donate_text_icon.svg"
                            
                          x:Name="btn_goToDonateFoodPage"
                          BackgroundColor="#f4c430"
@@ -41,7 +41,7 @@
                          Padding="16"
                          Grid.Row="0"
                          Grid.Column="1"
-                         Clicked="btn_clicked_goToListFoodPage"/>
+                         Clicked="btn_clicked_goToListFoodPage"/>-->
 
             <!-- Second Row, First Column -->
             <ImageButton Source="story_icon.svg"
